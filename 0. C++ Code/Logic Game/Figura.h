@@ -3,32 +3,7 @@
 
 using namespace std;
 #include <string>
-
-typedef enum
-{
-    COLOR_NEGRE = 0,
-    COLOR_GROC,
-    COLOR_BLAUCEL,
-    COLOR_MAGENTA,
-    COLOR_TARONJA,
-    COLOR_BLAUFOSC,
-    COLOR_VERMELL,
-    COLOR_VERD,
-    NO_COLOR
-} ColorFigura;
-
-
-typedef enum
-{
-    NO_FIGURA = 0,
-    FIGURA_O,
-    FIGURA_I,
-    FIGURA_T,
-    FIGURA_L,
-    FIGURA_J,
-    FIGURA_Z,
-    FIGURA_S,
-} TipusFigura;
+#include "InfoJoc.h"
 
 const int MAX_AMPLADA = 4;
 const int MAX_ALCADA = 4;
@@ -61,6 +36,21 @@ public:
     int getPosicioX() { return m_posicioX; }
     int getPosicioY() { return m_posicioY; }
     int getCasellaFigura(int fila, int columna) { return m_formaFiguraActual[fila][columna]; }
+
+    const int(&getFormaFiguraActual())[MAX_ALCADA][MAX_AMPLADA]
+    {
+        return m_formaFiguraActual;
+    }
+    void setFigura(int figura[MAX_AMPLADA][MAX_ALCADA])
+    {
+        for (int fila = 0; fila < MAX_AMPLADA; fila++)
+        {
+            for (int col = 0; col < MAX_ALCADA; col++)
+            {
+                figura[fila][col] = m_formaFiguraActual[fila][col];
+            }
+        }
+    }
 
 
 private:

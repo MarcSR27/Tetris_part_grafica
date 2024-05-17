@@ -17,7 +17,7 @@ public:
 	bool giraFigura(DireccioGir sentit);
 	bool mouFigura(int dirX); //dirX == -1 per esquerre, dirX == 1 per dreta
 	int baixaFigura();
-
+	Figura getFigura() { return m_figuraCaient; }
 
 private:
 	Figura m_figuraCaient;

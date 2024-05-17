@@ -16,18 +16,147 @@ Partida::Partida()
     m_forma[1][2] = COLOR_BLAUFOSC;
     m_fila = 1;
     m_columna = 5;
+    m_puntuacio = 0;
+
+    m_figuraNova = NO_FIGURA;
+    m_estatFiguraNova = -1;
 }
 
-int generarPosicioAleatoria()  // genera posicio aleatoria quan baixa la figura
+void Partida::inicialitza(int mode, const string& fitxerInicial, const string& fitxerFigures, const string& fitxerMoviments)
+{
+
+}
+
+int Partida::generarNumAleatori(int min, int max)  // genera posicio aleatoria quan baixa la figura
 {
     random_device rd;
     mt19937 gen(rd());
-    uniform_int_distribution<> distrib(1, N_COL_TAULER); //genera posicio random entre columnes 1 i ultima
+    uniform_int_distribution<> distrib(min, max); //genera posicio random entre columnes 1 i ultima
     return distrib(gen);
+}
+
+
+TipusFigura Partida::generarFiguraAleatoria(TipusFigura min, TipusFigura max)  // genera una figura aleatoria
+{
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> distrib(min, max);
+    int valorAleatorio = distrib(gen);
+
+    return static_cast<TipusFigura>(valorAleatorio); //Pasar de int a Tipus Figura, que no deixaba retornar
+}
+
+void Partida::dibuixaFigura(Figura& figura)
+{
+    //Per poder fer servir les funcions de clase Figura
+    const int(&formaFigura)[MAX_ALCADA][MAX_AMPLADA] = figura.getFormaFiguraActual();
+
+    // Obtenir la posicio de la figura
+    int filaInicial = m_fila - 1;
+    int columnaInicial = m_columna;
+    
+    IMAGE_NAME bloc = GRAFIC_FONS;
+    switch (figura.getColor())
+    {
+    case COLOR_GROC: bloc = GRAFIC_QUADRAT_GROC; break;
+    case COLOR_BLAUCEL: bloc = GRAFIC_QUADRAT_BLAUCEL; break;
+    case COLOR_MAGENTA: bloc = GRAFIC_QUADRAT_MAGENTA; break;
+    case COLOR_TARONJA: bloc = GRAFIC_QUADRAT_TARONJA; break;
+    case COLOR_BLAUFOSC: bloc = GRAFIC_QUADRAT_BLAUFOSC; break;
+    case COLOR_VERMELL: bloc = GRAFIC_QUADRAT_VERMELL; break;
+    case COLOR_VERD: bloc = GRAFIC_QUADRAT_VERD; break;
+    }
+    // Crea la figura
+    for (int fila = 0; fila < MAX_ALCADA; fila++)
+    {
+        for (int columna = 0; columna < MAX_AMPLADA; columna++)
+        {
+            if (figura.getFormaFiguraActual()[fila][columna] != COLOR_NEGRE) // si es diferente de negre, hi ha que pintar aquell bloc
+            {
+                // Per reduir, indica la posicio per pantalla
+                int x = POS_X_TAULER + (columnaInicial + columna) * MIDA_QUADRAT;
+                int y = POS_Y_TAULER + (filaInicial + fila) * MIDA_QUADRAT;
+
+                // Dibuixa la figura
+                GraphicManager::getInstance()->drawSprite(bloc, x, y, false);
+            }
+        }
+    }
+}
+
+void Partida::movimentFigura(Figura& figura)
+{
+    const int(&formaFigura)[MAX_ALCADA][MAX_AMPLADA] = figura.getFormaFiguraActual();
+
+    if (Keyboard_GetKeyTrg(KEYBOARD_RIGHT))
+        if (m_columna < N_COL_TAULER and m_fila < N_FILES_TAULER)
+            m_columna++;
+    if (Keyboard_GetKeyTrg(KEYBOARD_LEFT))
+        if (m_columna > 1 and m_fila < N_FILES_TAULER)
+            m_columna--;
+    if (Keyboard_GetKeyTrg(KEYBOARD_SPACE))
+        if (m_fila < N_FILES_TAULER)
+            m_fila = N_FILES_TAULER;
+
+    // Reinicia la posición si se presiona la tecla 'R'
+    //Unicament per Provar
+    if (Keyboard_GetKeyTrg(KEYBOARD_R))
+    {
+        m_fila = 1;
+        m_columna = generarNumAleatori(1, N_COL_TAULER);
+
+        m_figuraNova = generarFiguraAleatoria(FIGURA_O, FIGURA_S);
+        m_estatFiguraNova = generarNumAleatori(0, 3);
+
+        Figura figura(m_figuraNova, m_estatFiguraNova); // figura i estat
+        dibuixaFigura(figura);
+    }
 }
 
 void Partida::actualitza(double deltaTime)
 {
+    // Dibuja el fondo y el tablero
+    GraphicManager::getInstance()->drawSprite(GRAFIC_FONS, 0, 0, false);
+    GraphicManager::getInstance()->drawSprite(GRAFIC_TAULER, POS_X_TAULER, POS_Y_TAULER, false);
+
+    // Crea el mensaje y lo dibuja en la pantalla
+    string msg = "Fila: " + to_string(m_fila) + ", Columna: " + to_string(m_columna);
+    GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER, POS_Y_TAULER - 50, 1.0, msg);
+
+    string tiempo = "Tiempo: " + to_string(deltaTime);
+    if (!m_figuraInicialGenerada)
+    {
+        m_figuraNova = generarFiguraAleatoria(FIGURA_O, FIGURA_S);
+        m_estatFiguraNova = generarNumAleatori(0, 3);
+
+        m_figuraInicialGenerada = true;
+    }
+    Figura figura(m_figuraNova, m_estatFiguraNova);
+    dibuixaFigura(figura);
+
+    // Actualiza el tiempo y la fila
+    m_temps += deltaTime;
+    if (m_temps > 0.5)
+    {
+        if (m_fila < N_FILES_TAULER)
+            m_fila++;
+        m_temps = 0.0;
+    }
+    movimentFigura(m_figura);
+    
+
+    /*
+    GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER, POS_Y_TAULER - 100, 1.0, tiempo);
+    for (int i = 0; i < MIDA - 2; i++) {
+        for (int j = 0; j < MIDA - 2; j++)
+        {
+            GraphicManager::getInstance()->drawSprite(GRAFIC_QUADRAT_VERD, POS_X_TAULER + ((m_columna + i) * MIDA_QUADRAT), POS_Y_TAULER + ((m_fila - 1 + j) * MIDA_QUADRAT), false);
+        }
+    }
+   */
+
+    
+
     //TODO 1: Interactuar amb la crida per dibuixar gràfics (sprites).
     // 	      Dibuixar a pantalla el fons i el gràfic amb el tauler buit.
     //------------------------------------------------------------------
@@ -79,54 +208,6 @@ void Partida::actualitza(double deltaTime)
     // comprovant que no ens passem dels limits del tauler.
     // Fer que cada segon baixi una fila, comprovant que no ens passem del limit inferior del tauler.
 
-
-    do
-    {
-        // Dibuja el fondo y el tablero
-        GraphicManager::getInstance()->drawSprite(GRAFIC_FONS, 0, 0, false);
-        GraphicManager::getInstance()->drawSprite(GRAFIC_TAULER, POS_X_TAULER, POS_Y_TAULER, false);
-
-        // Crea el mensaje y lo dibuja en la pantalla
-        string msg = "Fila: " + to_string(m_fila) + ", Columna: " + to_string(m_columna);
-        GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER, POS_Y_TAULER - 50, 1.0, msg);
-
-        string tiempo = "Tiempo: " + to_string(deltaTime);
-        GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER, POS_Y_TAULER - 100, 1.0, tiempo);
-
-        // Dibuja un cuadrado en la posición actual
-        GraphicManager::getInstance()->drawSprite(GRAFIC_QUADRAT_VERD, POS_X_TAULER + (m_columna * MIDA_QUADRAT), POS_Y_TAULER + ((m_fila - 1) * MIDA_QUADRAT), false);
-
-        // Actualiza el tiempo y la fila
-        m_temps += deltaTime;
-        if (m_temps > 0.5)
-        {
-            if (m_fila < N_FILES_TAULER)
-                m_fila++;
-            m_temps = 0.0;
-        }
-
-        // Dibuja otro cuadrado verde en la nueva posición
-        GraphicManager::getInstance()->drawSprite(GRAFIC_QUADRAT_VERD, POS_X_TAULER + (m_columna * MIDA_QUADRAT), POS_Y_TAULER + ((m_fila - 1) * MIDA_QUADRAT), false);
-
-        // Maneja la entrada del teclado
-        if (Keyboard_GetKeyTrg(KEYBOARD_RIGHT))
-            if (m_columna < N_COL_TAULER and m_fila < N_FILES_TAULER)
-                m_columna++;
-        if (Keyboard_GetKeyTrg(KEYBOARD_LEFT))
-            if (m_columna > 1 and m_fila < N_FILES_TAULER)
-                m_columna--;
-        if (Keyboard_GetKeyTrg(KEYBOARD_SPACE))
-            if (m_fila < N_FILES_TAULER)
-                m_fila = N_FILES_TAULER;
-
-        // Reinicia la posición si se presiona la tecla 'R'
-        if (Keyboard_GetKeyTrg(KEYBOARD_R))
-        {
-            m_fila = 1;
-            m_columna = generarPosicioAleatoria();
-        }
-
-    } while (Keyboard_GetKeyTrg(KEYBOARD_ESCAPE)); // !! No acabado, mejor no pulsar aun.
 
 
 
