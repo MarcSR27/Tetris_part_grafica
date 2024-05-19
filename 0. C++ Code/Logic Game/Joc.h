@@ -11,12 +11,14 @@ class Joc
 {
 public:
 	Joc();
-	void inicialitza(const string& nomFitxer);
+	void inicialitza(int const mode, const string& nomFitxer, int const columna, TipusFigura const tipusFigura, int const estat);
 	void escriuTauler(const string& nomFitxer);
 
 	bool giraFigura(DireccioGir sentit);
 	bool mouFigura(int dirX); //dirX == -1 per esquerre, dirX == 1 per dreta
 	int baixaFigura();
+
+	//segona part
 	Figura getFigura() { return m_figuraCaient; }
 
 private:

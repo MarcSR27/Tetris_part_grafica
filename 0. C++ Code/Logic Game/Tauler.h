@@ -22,6 +22,9 @@ public:
 
 	int eliminarFila(int fila, int columna); // elimina fila sencera
 
+	//segona Part
+	void dibuixaTauler();
+
 private:
 	int m_tauler[MAX_FILA][MAX_COL];
 };

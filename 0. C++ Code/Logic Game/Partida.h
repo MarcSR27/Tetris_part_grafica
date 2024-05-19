@@ -16,6 +16,7 @@ public:
     void inicialitza(int mode, const string& fitxerInicial, const string& fitxerFigures, const string& fitxerMoviments);
     void actualitza(double deltaTime);
 
+    ////
     int generarNumAleatori(int min, int max);
     TipusFigura generarFiguraAleatoria(TipusFigura min, TipusFigura max);
     void dibuixaFigura(Figura& figura);
@@ -23,9 +24,12 @@ public:
 
 private:
     double m_temps;
+    //esborrar
     static const int MIDA = 4;
     ColorFigura m_forma[MIDA][MIDA];
     int m_fila, m_columna;
+    
+    /////
     int m_puntuacio;
     Joc m_joc;
     bool m_figuraInicialGenerada = false;
@@ -33,6 +37,7 @@ private:
     TipusFigura m_figuraNova;
     int m_estatFiguraNova;
     Figura m_figura;
+    int m_nivell;
 };
 
 #endif 

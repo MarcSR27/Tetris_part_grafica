@@ -37,6 +37,10 @@ public:
     int getPosicioY() { return m_posicioY; }
     int getCasellaFigura(int fila, int columna) { return m_formaFiguraActual[fila][columna]; }
 
+
+    //segona Part
+    void dibuixaFigura();
+
     const int(&getFormaFiguraActual())[MAX_ALCADA][MAX_AMPLADA]
     {
         return m_formaFiguraActual;

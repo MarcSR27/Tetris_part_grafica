@@ -92,14 +92,6 @@ void Tauler::guardaTauler(string nomFitxer) // per saber quin tauler tenim en el
 
 bool Tauler::comprovaSiCasellaForaTauler(int fila, int columna)
 {
-/*	bool casellaFora = true;
-
-	if ((fila >= 0) && (fila < MAX_FILA) && (columna >= 0) && (columna < MAX_COL))
-	{
-		casellaFora = false;
-	}
-	return casellaFora */
-
 	return !((fila >= 0) && (fila < MAX_FILA) && (columna >= 0) && (columna < MAX_COL)); //Si esta fora de la casella retorna true, sino false
 }
 
@@ -119,5 +111,18 @@ void Tauler::actualitzaTauler(Figura figura)
 		}
 
 		++i;
+	}
+}
+
+void Tauler::dibuixaTauler()
+{
+	for (int i = 0; i < MAX_FILA; i++)
+	{
+		for (int j = 0; j < MAX_COL; j++)
+		{
+			//cout << m_tauler[i][j] << " ";
+		}
+
+		//cout << endl;
 	}
 }

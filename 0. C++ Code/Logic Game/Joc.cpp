@@ -12,37 +12,43 @@ Joc::Joc()
 	m_nivell = 0;
 }
 
-void Joc::inicialitza(const string& nomFitxer)
+void Joc::inicialitza(int const mode, const string& nomFitxer, int const columna, TipusFigura const tipusFigura, int const estat)
 {
-	ifstream arxiu;
-	arxiu.open(nomFitxer);
-
-	if (arxiu.is_open())
+	if (mode == 1)
 	{
-		//llegir la primera fila, les dades de la figura
-		int fila, columna, estat, tipus;
-		arxiu >> tipus >> fila >> columna >> estat;
+		ifstream arxiu;
+		arxiu.open(nomFitxer);
 
-		m_figuraCaient = Figura(static_cast<TipusFigura>(tipus), estat);
-		m_figuraCaient.setPosicioX(--columna);
-		m_figuraCaient.setPosicioY(--fila);
-
-		//llegir les dades del tauler
-		for (int i = 0; i < MAX_FILA; i++)
+		if (arxiu.is_open())
 		{
-			for (int j = 0; j < MAX_COL; j++)
+			/*//llegir la primera fila, les dades de la figura
+			int fila, columna, estat, tipus;
+			arxiu >> tipus >> fila >> columna >> estat;
+
+			m_figuraCaient = Figura(static_cast<TipusFigura>(tipus), estat);
+			m_figuraCaient.setPosicioX(--columna);
+			m_figuraCaient.setPosicioY(--fila);*/
+
+			//llegir les dades del tauler
+			for (int i = 0; i < MAX_FILA; i++)
 			{
-				int valor;
-				arxiu >> valor;
-				m_taulerJoc.setCasella(i, j, valor);
+				for (int j = 0; j < MAX_COL; j++)
+				{
+					int valor;
+					arxiu >> valor;
+					m_taulerJoc.setCasella(i, j, valor);
+				}
 			}
+
+			arxiu.close();
 		}
-
-		//escriure figura al tauler
-		escriuFiguraAlTauler();
-
-		arxiu.close();
 	}
+
+	//ACTUALITZA LA FIGURA
+	m_figuraCaient.setPosicioX(columna);
+	m_figuraCaient.setPosicioY(0);
+	m_figuraCaient = Figura(tipusFigura, estat)
+
 }
 
 

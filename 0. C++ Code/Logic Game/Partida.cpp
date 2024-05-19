@@ -16,16 +16,39 @@ Partida::Partida()
     m_forma[1][2] = COLOR_BLAUFOSC;
     m_fila = 1;
     m_columna = 5;
+    
+    /////
     m_puntuacio = 0;
 
     m_figuraNova = NO_FIGURA;
     m_estatFiguraNova = -1;
 }
 
-void Partida::inicialitza(int mode, const string& fitxerInicial, const string& fitxerFigures, const string& fitxerMoviments)
+void Partida::inicialitza(int const mode, const string& fitxerInicial, const string& fitxerFigures,
+    const string& fitxerMoviments)
 {
+    if (mode == 1) //mode test
+    {
+        //ACTUALITZA EL TAULER AL SEU ESTAT INICIAL
+        //m_joc.inicialitza(fitxerInicial);
 
+        //GUARDA LES FIGURES QUE APAREIXERAN
+
+        //GUARDA ELS MOVIMENTS QUE ES FARAN
+
+    }
+    else //mode normal
+    {
+        //INICIALITZA EL TAULER A BUIT
+        m_joc = Joc();
+
+        //GENERA ALEATORIAMENT UNA FIGURA
+
+    }
+    m_nivell = 0;
+    m_puntuacio = 0;
 }
+
 
 int Partida::generarNumAleatori(int min, int max)  // genera posicio aleatoria quan baixa la figura
 {

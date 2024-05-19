@@ -212,4 +212,18 @@ void Figura::cauFigura()
     //com la figura esta caient, la figura descendeix cap a valors mes grans de Y, per tant augmentem la posicio Y
 }
 
+void Figura::dibuixaFigura()
+{
+    for (int i = 0; i < MAX_ALCADA; i++)
+    {
+        for (int j = 0; j < MAX_AMPLADA; j++)
+        {
+            //cout << m_formaFiguraActual[i][j];
+            ++j;
+        }
+
+        ++i;
+    }
+}
+
 #endif
