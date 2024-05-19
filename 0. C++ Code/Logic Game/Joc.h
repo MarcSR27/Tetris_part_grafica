@@ -19,7 +19,9 @@ public:
 	int baixaFigura();
 
 	//segona part
-	Figura getFigura() { return m_figuraCaient; }
+	//Figura getFigura() { return m_figuraCaient; }
+	bool setFigura(int const columna, TipusFigura const tipus, int const estat);
+
 
 private:
 	Figura m_figuraCaient;
@@ -30,7 +32,7 @@ private:
 
 	void escriuFiguraAlTauler();
 	void esborraFiguraDelTauler();
-	bool comprovaMoviment(Figura& figuraSeguent); //comprova si la figura a posar colusiona amb una altra o sobrepassa els limits del tauler
+	bool comprovaMoviment(Figura& figuraSeguent); //comprova si la figura a posar colusiona amb una altra o sobrepassa els limits del tauler 
 };
 
 

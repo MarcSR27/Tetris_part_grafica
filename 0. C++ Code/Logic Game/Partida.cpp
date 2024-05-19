@@ -6,7 +6,7 @@
 
 Partida::Partida()
 {
-    m_temps = 0;
+    /*m_temps = 0;
     for (int i = 0; i < MIDA; i++)
         for (int j = 0; j < MIDA; j++)
             m_forma[i][j] = NO_COLOR;
@@ -15,17 +15,20 @@ Partida::Partida()
     m_forma[1][1] = COLOR_BLAUFOSC;
     m_forma[1][2] = COLOR_BLAUFOSC;
     m_fila = 1;
-    m_columna = 5;
+    m_columna = 5;*/
     
     /////
     m_puntuacio = 0;
 
-    m_figuraNova = NO_FIGURA;
-    m_estatFiguraNova = -1;
+    //m_figuraNova = NO_FIGURA;
+    //m_estatFiguraNova = -1;
+    m_nivell = 0;
+
+    m_joc = Joc();
+
 }
 
-void Partida::inicialitza(int const mode, const string& fitxerInicial, const string& fitxerFigures,
-    const string& fitxerMoviments)
+void Partida::inicialitza(int const mode, const string& fitxerInicial, const string& fitxerFigures, const string& fitxerMoviments)
 {
     if (mode == 1) //mode test
     {
@@ -43,12 +46,33 @@ void Partida::inicialitza(int const mode, const string& fitxerInicial, const str
         m_joc = Joc();
 
         //GENERA ALEATORIAMENT UNA FIGURA
+        int estat, columna;
+        TipusFigura tipusFigura;
 
+        tipusFigura = generarTipusFiguraAleatoria();
+        columna = generarNumAleatori(0, MAX_COL);
+        estat = generarNumAleatori(0, 4);
+
+        bool canvi = m_joc.setFigura(columna, tipusFigura, estat);
     }
+
     m_nivell = 0;
     m_puntuacio = 0;
 }
 
+void Partida::figuraAleatoria()
+{
+    int estat, columna;
+    TipusFigura tipusFigura;
+
+    do
+    {
+        tipusFigura = generarTipusFiguraAleatoria();
+        columna = generarNumAleatori(0, MAX_COL);
+        estat = generarNumAleatori(0, 4);
+
+    } while (!m_joc.setFigura(columna, tipusFigura, estat));
+}
 
 int Partida::generarNumAleatori(int min, int max)  // genera posicio aleatoria quan baixa la figura
 {
@@ -59,16 +83,17 @@ int Partida::generarNumAleatori(int min, int max)  // genera posicio aleatoria q
 }
 
 
-TipusFigura Partida::generarFiguraAleatoria(TipusFigura min, TipusFigura max)  // genera una figura aleatoria
+TipusFigura Partida::generarTipusFiguraAleatoria(/*TipusFigura min, TipusFigura max*/)  // genera una figura aleatoria
 {
     random_device rd;
     mt19937 gen(rd());
-    uniform_int_distribution<> distrib(min, max);
+    uniform_int_distribution<> distrib(static_cast<int>(TipusFigura::FIGURA_O), static_cast<int>(TipusFigura::FIGURA_S));
     int valorAleatorio = distrib(gen);
 
     return static_cast<TipusFigura>(valorAleatorio); //Pasar de int a Tipus Figura, que no deixaba retornar
 }
 
+/*
 void Partida::dibuixaFigura(Figura& figura)
 {
     //Per poder fer servir les funcions de clase Figura
@@ -105,7 +130,7 @@ void Partida::dibuixaFigura(Figura& figura)
             }
         }
     }
-}
+}*/
 
 void Partida::movimentFigura(Figura& figura)
 {
@@ -147,6 +172,7 @@ void Partida::actualitza(double deltaTime)
     GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER, POS_Y_TAULER - 50, 1.0, msg);
 
     string tiempo = "Tiempo: " + to_string(deltaTime);
+    
     if (!m_figuraInicialGenerada)
     {
         m_figuraNova = generarFiguraAleatoria(FIGURA_O, FIGURA_S);

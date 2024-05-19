@@ -12,7 +12,7 @@ Joc::Joc()
 	m_nivell = 0;
 }
 
-void Joc::inicialitza(int const mode, const string& nomFitxer, int const columna, TipusFigura const tipusFigura, int const estat)
+void Joc::inicialitza(int const mode, const string& nomFitxer, int const columna, TipusFigura const tipusFigura, int const estat) //REVISAR, SENSE ACABAR (NOMES PROVISIONAL)
 {
 	if (mode == 1)
 	{
@@ -45,10 +45,26 @@ void Joc::inicialitza(int const mode, const string& nomFitxer, int const columna
 	}
 
 	//ACTUALITZA LA FIGURA
-	m_figuraCaient.setPosicioX(columna);
-	m_figuraCaient.setPosicioY(0);
-	m_figuraCaient = Figura(tipusFigura, estat);
+	setFigura(columna, tipusFigura, estat);
+}
 
+bool Joc::setFigura(int const columna, TipusFigura const tipus, int const estat)
+{
+	Figura figura;
+	bool correcte = false;
+
+	figura.setPosicioY(0);
+	figura.setPosicioX(columna);
+	figura = Figura(tipus, estat);
+
+	if (comprovaMoviment(figura))
+	{
+		correcte = true;
+
+		m_figuraCaient = figura;
+	}
+	
+	return correcte;
 }
 
 

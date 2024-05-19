@@ -17,10 +17,11 @@ public:
     void actualitza(double deltaTime);
 
     ////
-    int generarNumAleatori(int min, int max);
-    TipusFigura generarFiguraAleatoria(TipusFigura min, TipusFigura max);
-    void dibuixaFigura(Figura& figura);
+    int generarNumAleatori(int min, int max); //per generar columna i estat aleatori
+    TipusFigura generarTipusFiguraAleatoria(/*TipusFigura min, TipusFigura max*/); //genera tipus de figura de forma aleatoria
+    //void dibuixaFigura(Figura& figura);
     void movimentFigura(Figura& figura);
+    void figuraAleatoria(); //genera la figura aleatoria
 
 private:
     double m_temps;
@@ -32,11 +33,10 @@ private:
     /////
     int m_puntuacio;
     Joc m_joc;
-    bool m_figuraInicialGenerada = false;
+    bool m_figuraInicialGenerada = false; //esborra?
 
-    TipusFigura m_figuraNova;
-    int m_estatFiguraNova;
-    Figura m_figura;
+    TipusFigura m_figuraNova; //esborra?
+    //int m_estatFiguraNova;
     int m_nivell;
 };
 

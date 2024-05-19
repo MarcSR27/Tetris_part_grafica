@@ -1,6 +1,9 @@
 #include "Tauler.h"
 #include <fstream>
 
+#include "InfoJoc.h"
+#include "GraphicManager.h"
+
 Tauler::Tauler()
 {
 	for (int i = 0; i < MAX_FILA; i++)
@@ -116,13 +119,14 @@ void Tauler::actualitzaTauler(Figura figura)
 
 void Tauler::dibuixaTauler()
 {
-	for (int i = 0; i < MAX_FILA; i++)
+	for (int i = 0; i < MAX_FILA; i++) 
 	{
 		for (int j = 0; j < MAX_COL; j++)
 		{
-			//cout << m_tauler[i][j] << " ";
+			if (m_tauler[i][j] != COLOR_NEGRE)
+			{
+				GraphicManager::getInstance()->drawSprite(GRAFIC_TAULER, POS_X_TAULER + i * MIDA_QUADRAT), POS_Y_TAULER + j * MIDA_QUADRAT), false);
+			}
 		}
-
-		//cout << endl;
 	}
 }

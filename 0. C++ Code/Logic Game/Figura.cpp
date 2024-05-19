@@ -8,6 +8,9 @@ using namespace std;
 #include <fstream>
 #include <iostream>
 
+#include "InfoJoc.h"
+#include "GraphicManager.h"
+
 Figura::Figura()
 {
     for (int i = 0; i < MAX_AMPLADA; i++)
@@ -130,9 +133,9 @@ void Figura::posicionsFigures(const string& nomArxiu)
 
     if (arxiu.is_open())
     {
-        for (int i = 0; i < MAX_AMPLADA; i++)
+        for (int i = 0; i < MAX_ALCADA; i++)
         {
-            for (int j = 0; j < MAX_ALCADA; j++)
+            for (int j = 0; j < MAX_AMPLADA; j++)
             {
                 arxiu >> m_formaFiguraActual[i][j];
             }
@@ -214,15 +217,27 @@ void Figura::cauFigura()
 
 void Figura::dibuixaFigura()
 {
+    IMAGE_NAME bloc = GRAFIC_FONS;
+    switch (m_color)
+    {
+    case COLOR_GROC: bloc = GRAFIC_QUADRAT_GROC; break;
+    case COLOR_BLAUCEL: bloc = GRAFIC_QUADRAT_BLAUCEL; break;
+    case COLOR_MAGENTA: bloc = GRAFIC_QUADRAT_MAGENTA; break;
+    case COLOR_TARONJA: bloc = GRAFIC_QUADRAT_TARONJA; break;
+    case COLOR_BLAUFOSC: bloc = GRAFIC_QUADRAT_BLAUFOSC; break;
+    case COLOR_VERMELL: bloc = GRAFIC_QUADRAT_VERMELL; break;
+    case COLOR_VERD: bloc = GRAFIC_QUADRAT_VERD; break;
+    }
+
     for (int i = 0; i < MAX_ALCADA; i++)
     {
         for (int j = 0; j < MAX_AMPLADA; j++)
         {
-            //cout << m_formaFiguraActual[i][j];
-            ++j;
+            if (m_formaFiguraActual[i][j] != COLOR_NEGRE) //NO_COLOR
+            {
+                GraphicManager::getInstance()->drawSprite(bloc, POS_X_TAULER + ((m_posicioX + i) * MIDA_QUADRAT), POS_Y_TAULER + ((m_posicioY - 1 + j) * MIDA_QUADRAT), false);
+            }
         }
-
-        ++i;
     }
 }
 

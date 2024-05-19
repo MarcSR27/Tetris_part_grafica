@@ -41,6 +41,7 @@ public:
     //segona Part
     void dibuixaFigura();
 
+    /*
     const int(&getFormaFiguraActual())[MAX_ALCADA][MAX_AMPLADA]
     {
         return m_formaFiguraActual;
@@ -54,7 +55,7 @@ public:
                 figura[fila][col] = m_formaFiguraActual[fila][col];
             }
         }
-    }
+    }*/
 
 
 private:
