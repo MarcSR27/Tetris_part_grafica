@@ -47,7 +47,7 @@ void Joc::inicialitza(int const mode, const string& nomFitxer, int const columna
 	//ACTUALITZA LA FIGURA
 	m_figuraCaient.setPosicioX(columna);
 	m_figuraCaient.setPosicioY(0);
-	m_figuraCaient = Figura(tipusFigura, estat)
+	m_figuraCaient = Figura(tipusFigura, estat);
 
 }
 
