@@ -90,10 +90,10 @@ Figura::Figura(TipusFigura tipus, int estat)
         break;
 
     case FIGURA_I:
-        m_formaFiguraActual[1][0] = COLOR_BLAUCEL;
-        m_formaFiguraActual[1][1] = COLOR_BLAUCEL;
-        m_formaFiguraActual[1][2] = COLOR_BLAUCEL;
-        m_formaFiguraActual[1][3] = COLOR_BLAUCEL;
+        m_formaFiguraActual[0][0] = COLOR_BLAUCEL;
+        m_formaFiguraActual[0][1] = COLOR_BLAUCEL;
+        m_formaFiguraActual[0][2] = COLOR_BLAUCEL;
+        m_formaFiguraActual[0][3] = COLOR_BLAUCEL;
 
         m_color = COLOR_BLAUCEL;
         break;
@@ -198,7 +198,7 @@ void Figura::girarFigura(DireccioGir sentit)
                 }
             }
         }
-    } 
+    }
 }
 
 
@@ -235,7 +235,7 @@ void Figura::dibuixaFigura()
         {
             if (m_formaFiguraActual[i][j] != COLOR_NEGRE) //NO_COLOR
             {
-                GraphicManager::getInstance()->drawSprite(bloc, POS_X_TAULER + ((m_posicioX + i) * MIDA_QUADRAT), POS_Y_TAULER + ((m_posicioY - 1 + j) * MIDA_QUADRAT), false);
+                GraphicManager::getInstance()->drawSprite(bloc, POS_X_TAULER + ((m_posicioX + j + 1) * MIDA_QUADRAT), POS_Y_TAULER + ((m_posicioY - 1 + i) * MIDA_QUADRAT), false);
             }
         }
     }

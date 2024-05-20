@@ -53,7 +53,8 @@ void Partida::inicialitza(int const mode, const string& fitxerInicial, const str
         columna = generarNumAleatori(0, MAX_COL);
         estat = generarNumAleatori(0, 4);
 
-        bool canvi = m_joc.setFigura(columna, tipusFigura, estat);
+        //bool canvi = m_joc.setFigura(columna, tipusFigura, estat);
+        m_joc.setFigura(columna, tipusFigura, estat);
     }
 
     m_nivell = 0;
@@ -132,6 +133,7 @@ void Partida::dibuixaFigura(Figura& figura)
     }
 }*/
 
+/*
 void Partida::movimentFigura(Figura& figura)
 {
     const int(&formaFigura)[MAX_ALCADA][MAX_AMPLADA] = figura.getFormaFiguraActual();
@@ -158,12 +160,17 @@ void Partida::movimentFigura(Figura& figura)
 
         Figura figura(m_figuraNova, m_estatFiguraNova); // figura i estat
         dibuixaFigura(figura);
-    }
-}
+    }*
 
-void Partida::actualitza(double deltaTime)
+
+
+
+
+}*/
+
+void Partida::actualitza(int const mode, double deltaTime) //!!!!NOTA - EL CODI ESTA AL FINAL DELS COMENTARIS
 {
-    // Dibuja el fondo y el tablero
+    /*// Dibuja el fondo y el tablero
     GraphicManager::getInstance()->drawSprite(GRAFIC_FONS, 0, 0, false);
     GraphicManager::getInstance()->drawSprite(GRAFIC_TAULER, POS_X_TAULER, POS_Y_TAULER, false);
 
@@ -272,7 +279,50 @@ void Partida::actualitza(double deltaTime)
     //TODO 5: Mostrar l’estat inicial del joc amb el tauler i la figura inicialitzats del fitxer        
     //-----------------------------------------
 
+    int filesEliminades = 0;
+    bool baixa = true;
 
+    GraphicManager::getInstance()->drawSprite(GRAFIC_FONS, 0, 0, false);
+    m_joc.dibuixa();
+
+    //ACCIONS DE TECLAT
+    if (Keyboard_GetKeyTrg(KEYBOARD_RIGHT))
+    {
+        m_joc.mouFigura(1);
+    }
+    else if (Keyboard_GetKeyTrg(KEYBOARD_LEFT))
+    {
+        m_joc.mouFigura(-1);
+    }
+
+    GraphicManager::getInstance()->drawSprite(GRAFIC_FONS, 0, 0, false); 
+    m_joc.dibuixa();
+
+
+    //BAIXAR FIGURA
+    m_temps += deltaTime;
+    if (m_temps > 0.5)
+    {
+        baixa = m_joc.baixaFigura(filesEliminades);
+        if (!baixa)
+        {
+            //figuraAleatoria();
+        }
+        m_temps = 0.0;
+    }
+
+    GraphicManager::getInstance()->drawSprite(GRAFIC_FONS, 0, 0, false);
+    m_joc.dibuixa();
+
+
+    //MOSTRAR TEXT
+    string msg = "Fila: " + to_string(m_joc.getFilaFigura()) + ", Columna: " + to_string(m_joc.getColFigura());
+    GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER, POS_Y_TAULER - 50, 1.0, msg);
+
+    if (!baixa)
+    {
+        figuraAleatoria();
+    }
 
 
 }

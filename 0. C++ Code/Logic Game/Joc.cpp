@@ -45,7 +45,7 @@ void Joc::inicialitza(int const mode, const string& nomFitxer, int const columna
 	}
 
 	//ACTUALITZA LA FIGURA
-	setFigura(columna, tipusFigura, estat);
+	//setFigura(columna, tipusFigura, estat);
 }
 
 bool Joc::setFigura(int const columna, TipusFigura const tipus, int const estat)
@@ -53,9 +53,9 @@ bool Joc::setFigura(int const columna, TipusFigura const tipus, int const estat)
 	Figura figura;
 	bool correcte = false;
 
+	figura = Figura(tipus, estat);
 	figura.setPosicioY(0);
 	figura.setPosicioX(columna);
-	figura = Figura(tipus, estat);
 
 	if (comprovaMoviment(figura))
 	{
@@ -63,8 +63,14 @@ bool Joc::setFigura(int const columna, TipusFigura const tipus, int const estat)
 
 		m_figuraCaient = figura;
 	}
-	
+
 	return correcte;
+}
+
+void Joc::dibuixa()
+{
+	m_taulerJoc.dibuixaTauler();
+	m_figuraCaient.dibuixaFigura();
 }
 
 
@@ -142,7 +148,7 @@ bool Joc::giraFigura(DireccioGir sentit)
 
 	figuraSeguent.girarFigura(sentit); //actualitza l'estat que tindrien les caselles de la figura al girar
 
-	esborraFiguraDelTauler();
+	//esborraFiguraDelTauler();
 
 	if (comprovaMoviment(figuraSeguent)) //comprovem si la figura es podra possar al tauler
 	{
@@ -152,7 +158,7 @@ bool Joc::giraFigura(DireccioGir sentit)
 		figuraGirada = true;
 	}
 
-	escriuFiguraAlTauler();
+	//escriuFiguraAlTauler();
 
 	return figuraGirada;
 }
@@ -167,7 +173,7 @@ bool Joc::mouFigura(int dirX)
 
 	figuraSeguent.movimentHoritzontal(dirX); //actualitza la posicio que tindria la seguent figura al tauler
 
-	esborraFiguraDelTauler();
+	//esborraFiguraDelTauler();
 
 	if (comprovaMoviment(figuraSeguent)) //comprovem si la figura es podra possar al tauler
 	{
@@ -177,20 +183,18 @@ bool Joc::mouFigura(int dirX)
 		figuraMoguda = true;
 	}
 
-	escriuFiguraAlTauler();
+	//escriuFiguraAlTauler();
 
 	return figuraMoguda;
 }
 
 
-int Joc::baixaFigura()
+bool Joc::baixaFigura(int& filesEliminades)
 {
-
-	int filesCompletades = 0;
 	Figura figuraSeguent = m_figuraCaient;
-	bool haCaigut = false;
+	bool potBaixar = true;
 
-	esborraFiguraDelTauler();
+	//esborraFiguraDelTauler();
 
 	figuraSeguent.cauFigura(); //actualitza la posicio que tindria la seguent figura al tauler
 
@@ -199,17 +203,20 @@ int Joc::baixaFigura()
 		//actualitzem la nostra figura amb figuraSeguent i la posem al tauler
 		m_figuraCaient = figuraSeguent;
 
-		escriuFiguraAlTauler();
+		//escriuFiguraAlTauler();
 	}
 
 	else
 	{
 		escriuFiguraAlTauler();
 
-		filesCompletades = m_taulerJoc.eliminarFila(m_figuraCaient.getPosicioY(), m_figuraCaient.getPosicioX()); //les y son les files, les x les columnes
+		filesEliminades = m_taulerJoc.eliminarFila(m_figuraCaient.getPosicioY(), m_figuraCaient.getPosicioX()); //les y son les files, les x les columnes
+		//m_figuraCaient = Figura();
+
+		potBaixar = false;
 	}
 
-	return filesCompletades;
+	return potBaixar;
 }
 
 
@@ -222,7 +229,7 @@ bool Joc::comprovaMoviment(Figura& figuraSeguent)
 	while ((movimentCorrecte) && (fila < MAX_ALCADA))
 	{
 		columna = 0; //reiniciar columna para siguiente fila
-		
+
 		while ((movimentCorrecte) && (columna < MAX_AMPLADA))
 		{
 			//columnes --> x (augmentar les columnes es augmentar en l'eix de les x)

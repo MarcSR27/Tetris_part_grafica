@@ -2,8 +2,8 @@
 #define TAULER_H
 #include "Figura.h"
 
-const int MAX_FILA = 8;
-const int MAX_COL = 8;
+const int MAX_FILA = N_FILES_TAULER;
+const int MAX_COL = N_COL_TAULER;
 
 
 class Tauler

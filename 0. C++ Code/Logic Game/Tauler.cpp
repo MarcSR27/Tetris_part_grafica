@@ -119,13 +119,28 @@ void Tauler::actualitzaTauler(Figura figura)
 
 void Tauler::dibuixaTauler()
 {
-	for (int i = 0; i < MAX_FILA; i++) 
+	GraphicManager::getInstance()->drawSprite(GRAFIC_TAULER, POS_X_TAULER, POS_Y_TAULER, false);
+
+	for (int i = 0; i < MAX_FILA; i++)
 	{
 		for (int j = 0; j < MAX_COL; j++)
 		{
 			if (m_tauler[i][j] != COLOR_NEGRE)
-			{
-				GraphicManager::getInstance()->drawSprite(GRAFIC_TAULER, POS_X_TAULER + i * MIDA_QUADRAT), POS_Y_TAULER + j * MIDA_QUADRAT), false);
+			{				
+				//S'haura de fer un procediment per aquest switch case
+				IMAGE_NAME bloc = GRAFIC_FONS;
+				switch (m_tauler[i][j])
+				{
+				case COLOR_GROC: bloc = GRAFIC_QUADRAT_GROC; break;
+				case COLOR_BLAUCEL: bloc = GRAFIC_QUADRAT_BLAUCEL; break;
+				case COLOR_MAGENTA: bloc = GRAFIC_QUADRAT_MAGENTA; break;
+				case COLOR_TARONJA: bloc = GRAFIC_QUADRAT_TARONJA; break;
+				case COLOR_BLAUFOSC: bloc = GRAFIC_QUADRAT_BLAUFOSC; break;
+				case COLOR_VERMELL: bloc = GRAFIC_QUADRAT_VERMELL; break;
+				case COLOR_VERD: bloc = GRAFIC_QUADRAT_VERD; break;
+				}
+
+				GraphicManager::getInstance()->drawSprite(bloc, POS_X_TAULER + (j * MIDA_QUADRAT), POS_Y_TAULER + ((i)*MIDA_QUADRAT), false);
 			}
 		}
 	}

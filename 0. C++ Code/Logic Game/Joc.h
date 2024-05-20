@@ -16,11 +16,14 @@ public:
 
 	bool giraFigura(DireccioGir sentit);
 	bool mouFigura(int dirX); //dirX == -1 per esquerre, dirX == 1 per dreta
-	int baixaFigura();
+	bool baixaFigura(int& filesEliminades);
 
 	//segona part
 	//Figura getFigura() { return m_figuraCaient; }
 	bool setFigura(int const columna, TipusFigura const tipus, int const estat);
+	void dibuixa(); //dibuixa el tauler i la figura
+	int getFilaFigura() { return m_figuraCaient.getPosicioY(); }
+	int getColFigura() { return m_figuraCaient.getPosicioX(); }
 
 
 private:

@@ -9,8 +9,13 @@ using namespace std;
 class Tetris
 {
 public:
+	Tetris() { m_partida = Partida(); }
+
 	void juga(); //PROVISIONAL
 	void mostraPuntuacions(); //PROVISIONAL
+	void inicialitza();
+
+	//void menuInicial(int& mode); //PROVISIONAL
 
 
 private:
