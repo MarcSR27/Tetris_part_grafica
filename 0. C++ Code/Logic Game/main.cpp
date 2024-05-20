@@ -46,6 +46,10 @@ int main(int argc, const char* argv[])
     Uint64 NOW = SDL_GetPerformanceCounter();
     Uint64 LAST = 0;
     double deltaTime = 0;
+    int mode = 0; //Para provar el modo normal
+    game.inicialitza(mode); //     game.inicialitza(mode, fitxerInicial, fitxerFigures, fitxerMoviments);
+
+
     do
     {
         LAST = NOW;
@@ -55,7 +59,7 @@ int main(int argc, const char* argv[])
         // Captura tots els events de ratolí i teclat de l'ultim cicle
         pantalla.processEvents();
 
-        game.actualitza(deltaTime);
+        game.actualitza(mode,deltaTime);
 
         // Actualitza la pantalla
         pantalla.update();

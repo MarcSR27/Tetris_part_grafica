@@ -28,7 +28,8 @@ Partida::Partida()
 
 }
 
-void Partida::inicialitza(int const mode, const string& fitxerInicial, const string& fitxerFigures, const string& fitxerMoviments)
+void Partida::inicialitza(int const mode) //void Partida::inicialitza(int const mode, const string& fitxerInicial, const string& fitxerFigures, const string& fitxerMoviments)
+
 {
     if (mode == 1) //mode test
     {
@@ -48,10 +49,11 @@ void Partida::inicialitza(int const mode, const string& fitxerInicial, const str
         //GENERA ALEATORIAMENT UNA FIGURA
         int estat, columna;
         TipusFigura tipusFigura;
-
         tipusFigura = generarTipusFiguraAleatoria();
         columna = generarNumAleatori(0, MAX_COL);
         estat = generarNumAleatori(0, 4);
+
+        figuraAleatoria();
 
         //bool canvi = m_joc.setFigura(columna, tipusFigura, estat);
         m_joc.setFigura(columna, tipusFigura, estat);
@@ -294,6 +296,14 @@ void Partida::actualitza(int const mode, double deltaTime) //!!!!NOTA - EL CODI 
     {
         m_joc.mouFigura(-1);
     }
+    else if (Keyboard_GetKeyTrg(KEYBOARD_UP))
+    {
+        m_joc.giraFigura(GIR_HORARI);
+    }
+    else if (Keyboard_GetKeyTrg(KEYBOARD_DOWN))
+    {
+        m_joc.giraFigura(GIR_ANTI_HORARI);
+    }
 
     GraphicManager::getInstance()->drawSprite(GRAFIC_FONS, 0, 0, false); 
     m_joc.dibuixa();
@@ -306,7 +316,7 @@ void Partida::actualitza(int const mode, double deltaTime) //!!!!NOTA - EL CODI 
         baixa = m_joc.baixaFigura(filesEliminades);
         if (!baixa)
         {
-            //figuraAleatoria();
+            figuraAleatoria();
         }
         m_temps = 0.0;
     }
@@ -318,12 +328,6 @@ void Partida::actualitza(int const mode, double deltaTime) //!!!!NOTA - EL CODI 
     //MOSTRAR TEXT
     string msg = "Fila: " + to_string(m_joc.getFilaFigura()) + ", Columna: " + to_string(m_joc.getColFigura());
     GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER, POS_Y_TAULER - 50, 1.0, msg);
-
-    if (!baixa)
-    {
-        figuraAleatoria();
-    }
-
 
 }
 

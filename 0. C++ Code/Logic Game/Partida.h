@@ -13,9 +13,9 @@ class Partida
 {
 public:
     Partida();
-    void inicialitza(int mode, const string& fitxerInicial, const string& fitxerFigures, const string& fitxerMoviments);
+    //void inicialitza(int mode, const string& fitxerInicial, const string& fitxerFigures, const string& fitxerMoviments);
     void actualitza(int const mode, double deltaTime);
-
+    void inicialitza(int mode); //para provar el modo normal (no test)
     ////
     int generarNumAleatori(int min, int max); //per generar columna i estat aleatori
     TipusFigura generarTipusFiguraAleatoria(/*TipusFigura min, TipusFigura max*/); //genera tipus de figura de forma aleatoria
