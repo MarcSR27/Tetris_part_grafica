@@ -24,12 +24,16 @@ public:
     void figuraAleatoria(); //genera la figura aleatoria
     void puntuacioINivell(int const filesEliminades);
 
+    void escriuPuntuacio(const string& nomFitxer);
+
+
 private:
     double m_temps;
 
     ////////
     Joc m_joc;
     int m_nivell;
+    float m_incrementVelocitat; // per fer que augmenti la velocitat de caiguda de figuras
     int m_puntuacio; //revisar si cal (ja esta en joc)
     TipusTecla* m_moviment;
     bool m_partidaAcabada; //provisional

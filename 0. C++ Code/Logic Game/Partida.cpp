@@ -3,6 +3,9 @@
 #include "GraphicManager.h"
 
 #include <random> // llibreria per num aleatoris
+#include <string>
+#include <fstream>
+#include <iostream>
 
 Partida::Partida()
 {
@@ -10,6 +13,7 @@ Partida::Partida()
     m_puntuacio = 0;
     m_nivell = 0;
     m_temps = 0;
+    m_incrementVelocitat = 0;
 
     m_joc = Joc();
     m_partidaAcabada = false;
@@ -44,7 +48,8 @@ void Partida::inicialitza(int const mode/*, const string& fitxerInicial, const s
         m_joc.setFigura(columna, tipusFigura, estat);
     }
 
-    m_nivell = 0;
+    m_nivell = 1;
+    m_incrementVelocitat = 1;
     m_puntuacio = 0;
     m_temps = 0;
     m_partidaAcabada = false;
@@ -76,7 +81,7 @@ void Partida::puntuacioINivell(int const filesEliminades)
         if (m_puntuacio >= m_nivell * 1000)
         {
             ++m_nivell;
-
+            m_incrementVelocitat = m_incrementVelocitat + m_incrementVelocitat * 0.25;
             //AUGMENTA LA VELOCITAT
 
         }
@@ -157,7 +162,7 @@ void Partida::actualitza(int const mode, double deltaTime)
     if (baixa)
     {
         //BAIXAR FIGURA
-        m_temps += deltaTime;
+        m_temps = m_temps + deltaTime * m_incrementVelocitat;
         if (m_temps > 0.5)
         {
             baixa = m_joc.baixaFigura(filesEliminades);
@@ -176,11 +181,18 @@ void Partida::actualitza(int const mode, double deltaTime)
         string msg = "Fila: " + to_string(m_joc.getFilaFigura()) + ", Columna: " + to_string(m_joc.getColFigura());
         GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER, POS_Y_TAULER - 50, 1.0, msg);
 
+        string puntuacio = "Puntuacio: " + to_string(m_puntuacio);
+        GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER + 260 , POS_Y_TAULER - 80, 1.0, puntuacio);
+
+        string nivell = "Nivell: " + to_string(m_nivell);
+        GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER + 260, POS_Y_TAULER - 110, 1.0, nivell);
+
     }
     else
     {
         string msg = "Puntuacio Final: " + to_string(m_puntuacio) + ", Nivell: " + to_string(m_nivell);
         GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER, POS_Y_TAULER - 50, 1.0, msg);
+        escriuPuntuacio();
     }
 
     if (!baixa) //la figura s'ha posat al tauler
@@ -200,3 +212,16 @@ void Partida::actualitza(int const mode, double deltaTime)
     }
 }
 
+void Partida::escriuPuntuacio(const string& nomFitxer)
+{
+    ofstream fitxer;
+    fitxer.open(nomFitxer);
+    string nomJugador;
+    cout << "Introdueix el teu nom: ";
+    cin >> nomJugador;
+    if (fitxer.is_open())
+    {
+        fitxer << nomJugador << " " << m_puntuacio << endl;
+    }
+    fitxer.close();
+}
