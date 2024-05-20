@@ -235,7 +235,7 @@ void Figura::dibuixaFigura()
         {
             if (m_formaFiguraActual[i][j] != COLOR_NEGRE) //NO_COLOR
             {
-                GraphicManager::getInstance()->drawSprite(bloc, POS_X_TAULER + ((m_posicioX + j + 1) * MIDA_QUADRAT), POS_Y_TAULER + ((m_posicioY - 1 + i) * MIDA_QUADRAT), false);
+                GraphicManager::getInstance()->drawSprite(bloc, POS_X_TAULER + ((m_posicioX + j + 1) * MIDA_QUADRAT), POS_Y_TAULER + ((m_posicioY + i) * MIDA_QUADRAT), false);
             }
         }
     }

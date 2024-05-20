@@ -9,21 +9,21 @@
 #include "GraphicManager.h"
 #include <iostream>
 
-GraphicManager* GraphicManager::instance=NULL;
+GraphicManager* GraphicManager::instance = NULL;
 
 GraphicManager::GraphicManager()
-: m_oFontWhite_30(getFontPath(FONT_WHITE_30).c_str(),30,NFont::Color(255,255,255,255))
-, m_oFontRed_30(getFontPath(FONT_RED_30).c_str(),30,NFont::Color(255,0,0,255))
-, m_oFontGreen_30(getFontPath(FONT_GREEN_30).c_str(),30,NFont::Color(0,255,0,255))
+    : m_oFontWhite_30(getFontPath(FONT_WHITE_30).c_str(), 30, NFont::Color(255, 255, 255, 255))
+    , m_oFontRed_30(getFontPath(FONT_RED_30).c_str(), 30, NFont::Color(255, 0, 0, 255))
+    , m_oFontGreen_30(getFontPath(FONT_GREEN_30).c_str(), 30, NFont::Color(0, 255, 0, 255))
 {
-    for (int i = 0; i < GRAFIC_NUM_MAX; i ++){
+    for (int i = 0; i < GRAFIC_NUM_MAX; i++) {
         string path = getImagePath((IMAGE_NAME)i);
         m_aSprites[i].create(path.c_str());
     }
 }
 
 
-void GraphicManager::drawSprite (IMAGE_NAME name, float posX, float posY, bool centered) 
+void GraphicManager::drawSprite(IMAGE_NAME name, float posX, float posY, bool centered)
 {
     if (name >= 0 && name < GRAFIC_NUM_MAX)
     {
@@ -38,33 +38,33 @@ void GraphicManager::drawSprite (IMAGE_NAME name, float posX, float posY, bool c
     {
         cout << "Error: no existeix el identificador de image";
     }
-    
+
 }
 
-NFont::Rectf GraphicManager::drawFont (FONT_NAME name,
-                                       float posX, float posY,
-                                       float size,
-                                       const string& msg)
+NFont::Rectf GraphicManager::drawFont(FONT_NAME name,
+    float posX, float posY,
+    float size,
+    const string& msg)
 {
     switch (name) {
-        case FONT_GREEN_30:
-            return m_oFontGreen_30.draw(posX, posY, NFont::Scale(size), "%s", msg.c_str());
-            break;
-        case FONT_RED_30:
-            return m_oFontRed_30.draw(posX, posY, NFont::Scale(size), "%s", msg.c_str());
-            break;
-        case FONT_WHITE_30:
-            return m_oFontWhite_30.draw(posX, posY, NFont::Scale(size), "%s", msg.c_str());
-            break;
-            
-        default:
-            cout << "Error: no existeix el identificador de font";
-            break;
+    case FONT_GREEN_30:
+        return m_oFontGreen_30.draw(posX, posY, NFont::Scale(size), "%s", msg.c_str());
+        break;
+    case FONT_RED_30:
+        return m_oFontRed_30.draw(posX, posY, NFont::Scale(size), "%s", msg.c_str());
+        break;
+    case FONT_WHITE_30:
+        return m_oFontWhite_30.draw(posX, posY, NFont::Scale(size), "%s", msg.c_str());
+        break;
+
+    default:
+        cout << "Error: no existeix el identificador de font";
+        break;
     }
     return NFont::Rectf();
 }
 
-string GraphicManager::getImagePath(IMAGE_NAME name){
+string GraphicManager::getImagePath(IMAGE_NAME name) {
     string path;
     switch (name) {
     case GRAFIC_FONS:
@@ -99,25 +99,26 @@ string GraphicManager::getImagePath(IMAGE_NAME name){
         break;
 
     }
-    
-    
-    
+
+
+
     return path;
 }
-string GraphicManager::getFontPath(FONT_NAME name){
+string GraphicManager::getFontPath(FONT_NAME name) {
     string path;
-    switch (name) {
-        case FONT_GREEN_30:
-        case FONT_RED_30:
-        case FONT_WHITE_30:
-            path = "data/Fonts/FreeSans.ttf";
-            break;
-            
-        default:
-            path = "";
-            break;
+    switch (name) 
+    {
+    case FONT_GREEN_30:
+    case FONT_RED_30:
+    case FONT_WHITE_30:
+        path = "data/Fonts/FreeSans.ttf";
+        break;
+
+    default:
+        path = "";
+        break;
     }
-    
+
     return path;
 }
 

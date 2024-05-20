@@ -30,8 +30,14 @@
 #include "./InfoJoc.h"
 
 
+//eliminar
+#include "GraphicManager.h"
+
+
 int main(int argc, const char* argv[])
 {
+    int mode = 0;
+
     //Instruccions necesaries per poder incloure la llibreria i que trobi el main
     SDL_SetMainReady();
     SDL_Init(SDL_INIT_VIDEO);
@@ -46,9 +52,10 @@ int main(int argc, const char* argv[])
     Uint64 NOW = SDL_GetPerformanceCounter();
     Uint64 LAST = 0;
     double deltaTime = 0;
-    int mode = 0; //Para provar el modo normal
-    game.inicialitza(mode); //     game.inicialitza(mode, fitxerInicial, fitxerFigures, fitxerMoviments);
 
+    //game.figuraAleatoria();
+
+    game.inicialitza(mode);
 
     do
     {
@@ -59,7 +66,7 @@ int main(int argc, const char* argv[])
         // Captura tots els events de ratolí i teclat de l'ultim cicle
         pantalla.processEvents();
 
-        game.actualitza(mode,deltaTime);
+        game.actualitza(mode, deltaTime);
 
         // Actualitza la pantalla
         pantalla.update();

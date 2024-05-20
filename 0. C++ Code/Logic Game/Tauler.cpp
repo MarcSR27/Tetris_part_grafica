@@ -126,8 +126,7 @@ void Tauler::dibuixaTauler()
 		for (int j = 0; j < MAX_COL; j++)
 		{
 			if (m_tauler[i][j] != COLOR_NEGRE)
-			{				
-				//S'haura de fer un procediment per aquest switch case
+			{
 				IMAGE_NAME bloc = GRAFIC_FONS;
 				switch (m_tauler[i][j])
 				{
@@ -140,8 +139,7 @@ void Tauler::dibuixaTauler()
 				case COLOR_VERD: bloc = GRAFIC_QUADRAT_VERD; break;
 				}
 
-				GraphicManager::getInstance()->drawSprite(bloc, POS_X_TAULER + ((j + 1)* MIDA_QUADRAT), POS_Y_TAULER + ((i)*MIDA_QUADRAT), false);
-
+				GraphicManager::getInstance()->drawSprite(bloc, POS_X_TAULER + ((1 + j) * MIDA_QUADRAT), POS_Y_TAULER + ((i)*MIDA_QUADRAT), false);
 			}
 		}
 	}
