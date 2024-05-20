@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/1. Resources/MP_Practica.tlog/Cl.items.tlog
+/1. Resources/MP_Practica.tlog
+/2. Platforms/0. Windows Desktop/Program
