@@ -189,6 +189,12 @@
     <ClInclude Include="..\..\0. C++ Code\Logic Game\Tauler.h" />
     <ClInclude Include="..\..\0. C++ Code\Logic Game\Tetris.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="fitxerFigures.txt" />
+    <Text Include="fitxerInicial.txt" />
+    <Text Include="fitxerMov.txt" />
+    <Text Include="puntuacions.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

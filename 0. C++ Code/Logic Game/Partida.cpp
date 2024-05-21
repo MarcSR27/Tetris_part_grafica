@@ -20,12 +20,13 @@ Partida::Partida()
 
 }
 
-void Partida::inicialitza(int const mode/*, const string& fitxerInicial, const string& fitxerFigures, const string& fitxerMoviments*/)
+void Partida::inicialitza(int const mode, const string& fitxerInicial, const string& fitxerFigures, const string& fitxerMoviments)
 {
     if (mode == 1) //mode test
     {
         //ACTUALITZA EL TAULER AL SEU ESTAT INICIAL
-        //m_joc.inicialitza(fitxerInicial);
+
+       m_joc.inicialitza(fitxerInicial);
 
         //GUARDA LES FIGURES QUE APAREIXERAN
 
@@ -192,7 +193,10 @@ void Partida::actualitza(int const mode, double deltaTime)
     {
         string msg = "Puntuacio Final: " + to_string(m_puntuacio) + ", Nivell: " + to_string(m_nivell);
         GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER, POS_Y_TAULER - 50, 1.0, msg);
-        escriuPuntuacio();
+
+        string escape = "Prem ESCAPE per sortir";
+        GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER, POS_Y_TAULER - 30, 1.0, escape);
+        
     }
 
     if (!baixa) //la figura s'ha posat al tauler
@@ -214,14 +218,18 @@ void Partida::actualitza(int const mode, double deltaTime)
 
 void Partida::escriuPuntuacio(const string& nomFitxer)
 {
-    ofstream fitxer;
-    fitxer.open(nomFitxer);
+    ofstream fitxer(nomFitxer);
     string nomJugador;
     cout << "Introdueix el teu nom: ";
     cin >> nomJugador;
+
     if (fitxer.is_open())
     {
         fitxer << nomJugador << " " << m_puntuacio << endl;
+        fitxer.close();
     }
-    fitxer.close();
+    else
+    {
+        cout << "Error, no s'ha pogut guardar la teva puntuacio" << endl;
+    }
 }

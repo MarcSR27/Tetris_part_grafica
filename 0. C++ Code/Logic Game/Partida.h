@@ -13,7 +13,7 @@ class Partida
 {
 public:
     Partida();
-    void inicialitza(int mode/*, const string& fitxerInicial, const string& fitxerFigures, const string& fitxerMoviments*/);
+    void inicialitza(int mode, const string& fitxerInicial, const string& fitxerFigures, const string& fitxerMoviments);
     void actualitza(int const mode, double deltaTime);
 
     ////
@@ -38,6 +38,7 @@ private:
     TipusTecla* m_moviment;
     bool m_partidaAcabada; //provisional
     //falta atribut per guardar les figures que cauran
+    int m_mode;
 };
 
 #endif 

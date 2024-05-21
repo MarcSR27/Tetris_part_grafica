@@ -12,41 +12,40 @@ Joc::Joc()
 	m_nivell = 0;
 }
 
-void Joc::inicialitza(int const mode, const string& nomFitxer, int const columna, TipusFigura const tipusFigura, int const estat) //REVISAR, SENSE ACABAR (NOMES PROVISIONAL)
+void Joc::inicialitza(const string& nomFitxer/* int const columna, TipusFigura const tipusFigura, int const estat*/) //REVISAR, SENSE ACABAR (NOMES PROVISIONAL)
 {
-	if (mode == 1)
+	ifstream arxiu;
+	arxiu.open(nomFitxer);
+
+	if (arxiu.is_open())
 	{
-		ifstream arxiu;
-		arxiu.open(nomFitxer);
+		/*//llegir la primera fila, les dades de la figura
+		int fila, columna, estat, tipus;
+		arxiu >> tipus >> fila >> columna >> estat;
 
-		if (arxiu.is_open())
+		m_figuraCaient = Figura(static_cast<TipusFigura>(tipus), estat);
+		m_figuraCaient.setPosicioX(--columna);
+		m_figuraCaient.setPosicioY(--fila);*/
+
+		//llegir les dades del tauler
+		for (int i = 0; i < MAX_FILA; i++)
 		{
-			/*//llegir la primera fila, les dades de la figura
-			int fila, columna, estat, tipus;
-			arxiu >> tipus >> fila >> columna >> estat;
-
-			m_figuraCaient = Figura(static_cast<TipusFigura>(tipus), estat);
-			m_figuraCaient.setPosicioX(--columna);
-			m_figuraCaient.setPosicioY(--fila);*/
-
-			//llegir les dades del tauler
-			for (int i = 0; i < MAX_FILA; i++)
+			for (int j = 0; j < MAX_COL; j++)
 			{
-				for (int j = 0; j < MAX_COL; j++)
-				{
-					int valor;
-					arxiu >> valor;
-					m_taulerJoc.setCasella(i, j, valor);
-				}
+				int valor;
+				arxiu >> valor;
+				m_taulerJoc.setCasella(i, j, valor);
 			}
-
-			arxiu.close();
 		}
+
+		arxiu.close();
 	}
+			
+}
 
 	//ACTUALITZA LA FIGURA
 	//setFigura(columna, tipusFigura, estat);
-}
+//}
 
 bool Joc::setFigura(int const columna, TipusFigura const tipus, int const estat)
 {
