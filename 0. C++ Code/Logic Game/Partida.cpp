@@ -2,10 +2,7 @@
 #include "InfoJoc.h"
 #include "GraphicManager.h"
 
-#include <random> // llibreria per num aleatoris
-#include <string>
-#include <fstream>
-#include <iostream>
+
 
 Partida::Partida()
 {
@@ -54,6 +51,7 @@ void Partida::inicialitza(int const mode, const string& fitxerInicial, const str
     m_puntuacio = 0;
     m_temps = 0;
     m_partidaAcabada = false;
+    m_nomJugador = "";
 }
 
 void Partida::puntuacioINivell(int const filesEliminades)
@@ -216,20 +214,69 @@ void Partida::actualitza(int const mode, double deltaTime)
     }
 }
 
-void Partida::escriuPuntuacio(const string& nomFitxer)
-{
-    ofstream fitxer(nomFitxer);
-    string nomJugador;
-    cout << "Introdueix el teu nom: ";
-    cin >> nomJugador;
 
+void Partida::escriuPuntuacio(const string& nomFitxer) // Separa en dues funcions, es queda aixi provisional
+{
+    ifstream fitxer(nomFitxer);
+    list<Jugador> puntuacions; //llista on aniran el nom del jugador i les puntuacions
     if (fitxer.is_open())
     {
-        fitxer << nomJugador << " " << m_puntuacio << endl;
-        fitxer.close();
+        string nomJugador;
+        int puntuacio;
+        fitxer >> nomJugador >> puntuacio;
+        while (!fitxer.eof())
+        {
+            puntuacions.push_back({ nomJugador, puntuacio });
+            fitxer >> nomJugador >> puntuacio;
+        }
+        
     }
-    else
+    fitxer.close();
+
+    cout << "Introdueix el teu nom: " << endl;
+    cin >> m_nomJugador;
+
+    puntuacions.push_back({ m_nomJugador, m_puntuacio });
+    
+    for (list<Jugador>::iterator it = puntuacions.begin(); it != puntuacions.end(); ++it)
     {
-        cout << "Error, no s'ha pogut guardar la teva puntuacio" << endl;
+        for (list<Jugador>::iterator it2 = next(it); it2 != puntuacions.end(); ++it2)
+        {
+            if (it2->puntuacio > it->puntuacio)
+            {
+                swap(it->nom, it2->nom);
+                swap(it->puntuacio, it2->puntuacio);
+            }
+        }
     }
+
+    ofstream fitxerEscritura(nomFitxer);
+    if (fitxerEscritura.is_open())
+    {
+        for (list<Jugador>::iterator it = puntuacions.begin(); it != puntuacions.end(); ++it)
+        {
+            fitxerEscritura << it->nom << " " << it->puntuacio << endl;
+        }
+        fitxerEscritura.close();
+    }
+
+   
+}
+
+void Partida::mostraPuntuacio(const string& nomFitxer)
+{
+    ifstream fitxer(nomFitxer);
+    if (fitxer.is_open())
+    {
+        string nomJugador;
+        int puntuacio;
+        fitxer >> nomJugador >> puntuacio;
+        while (!fitxer.eof())
+        {
+            cout << nomJugador << " " << puntuacio << endl;
+            fitxer >> nomJugador >> puntuacio;
+        }
+
+    }
+    fitxer.close();
 }

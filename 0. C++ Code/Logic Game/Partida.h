@@ -6,8 +6,19 @@
 #include "InfoJoc.h"
 #include "Joc.h"
 
+#include <random> // llibreria per num aleatoris
+#include <string>
+#include <fstream>
+#include <iostream>
+#include <list>
+
 using namespace std;
 
+typedef struct
+{
+    string nom;
+    int puntuacio;
+}Jugador;
 
 class Partida
 {
@@ -25,7 +36,10 @@ public:
     void puntuacioINivell(int const filesEliminades);
 
     void escriuPuntuacio(const string& nomFitxer);
+    void mostraPuntuacio(const string& nomFitxer);
 
+    int const getPuntuacio() { return m_puntuacio; }
+    string getNomJugador() { return m_nomJugador; }
 
 private:
     double m_temps;
@@ -38,7 +52,8 @@ private:
     TipusTecla* m_moviment;
     bool m_partidaAcabada; //provisional
     //falta atribut per guardar les figures que cauran
-    int m_mode;
+    //int m_mode;
+    string m_nomJugador; // provisional, ya es veura si es necesaria
 };
 
 #endif 

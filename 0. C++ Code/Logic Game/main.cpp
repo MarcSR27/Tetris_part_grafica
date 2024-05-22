@@ -36,30 +36,51 @@
 
 int main(int argc, const char* argv[])
 {
+    Partida game;
+    string fitxerInicial = "fitxerInicial.txt";
+    string fitxerFigures = "fitxerFigures.txt";
+    string fitxerMov = "fitxerMov.txt";
+    string fitxerPuntuacions = "puntuacions.txt";
+
     int mode = 0;
+
     int opcio;
     bool estaJugant = true;
-    cout << "---------------------------------------------------------------------------------------------" << endl;
-    cout << "Selecciona una opcio:" << endl << endl;
-    cout << "1. Jugar mode normal" << endl;
-    cout << "2. Jugar mode test" << endl;
-    cout << "3. Visualitzar llista de millors puntuacions" << endl;
-    cout << "4. Sortir del programa" << endl;
-    cout << "---------------------------------------------------------------------------------------------" << endl;
+   
     do
     {
+        cout << "---------------------------------------------------------------------------------------------" << endl;
+        cout << "Selecciona una opcio:" << endl << endl;
+        cout << "1. Jugar mode normal" << endl;
+        cout << "2. Jugar mode test" << endl;
+        cout << "3. Visualitzar llista de millors puntuacions" << endl;
+        cout << "4. Sortir del programa" << endl;
+        cout << "---------------------------------------------------------------------------------------------" << endl;
+
         cin >> opcio;
         switch (opcio)
         {
         case 1: mode = 0; break;
         case 2: mode = 1; break;
-        case 3: // visualitzar llista puntuacions; break;
+        case 3: game.mostraPuntuacio(fitxerPuntuacions);
+            cout << "Vols tornar al menu? (s/n)" << endl;
+            char resposta;
+            cin >> resposta;
+            if (resposta == 's')
+            {
+                opcio = -1;
+            }
+            else
+            {
+                estaJugant = false;
+            }
+            break;
         case 4: estaJugant = false; break;
         default: cout << "Tens que escriure el numero d'una de les opcions (1, 2, 3, 4)" << endl;  break;
         }
     } while ((opcio != 1) and (opcio != 2) and (opcio != 3) and (opcio != 4));
     
-    if (estaJugant)
+    if (estaJugant) // si mira puntuacions o surt, no esta jugant
     {
         //Instruccions necesaries per poder incloure la llibreria i que trobi el main
         SDL_SetMainReady();
@@ -70,16 +91,13 @@ int main(int argc, const char* argv[])
         //Mostrem la finestra grafica
         pantalla.show();
 
-        Partida game;
-
         Uint64 NOW = SDL_GetPerformanceCounter();
         Uint64 LAST = 0;
         double deltaTime = 0;
 
         //game.figuraAleatoria();
-        string fitxerInicial = "fitxerInicial.txt";
-        string fitxerFigures = "fitxerFigures.txt";
-        string fitxerMov = "fitxerMov.txt";
+
+
         game.inicialitza(mode, fitxerInicial,fitxerFigures,fitxerMov);
 
         do
@@ -99,7 +117,7 @@ int main(int argc, const char* argv[])
         } while (!Keyboard_GetKeyTrg(KEYBOARD_ESCAPE));
         // Sortim del bucle si pressionem ESC
 
-        game.escriuPuntuacio("puntuacions.txt");
+        game.escriuPuntuacio(fitxerPuntuacions);
         //Instruccio necesaria per alliberar els recursos de la llibreria 
         SDL_Quit();
     }

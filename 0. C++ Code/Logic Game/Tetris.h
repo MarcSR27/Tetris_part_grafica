@@ -15,13 +15,13 @@ public:
 	void mostraPuntuacions(); //PROVISIONAL
 	void inicialitza();
 
-	//void menuInicial(int& mode); //PROVISIONAL
-
+	
+	//void menuInicial();
 
 private:
 	Partida m_partida;
 };
 
-void menuInicial(int& mode); //PROVISIONAL
+//void menuInicial(int& mode); //PROVISIONAL
 
 #endif;

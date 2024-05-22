@@ -14,8 +14,7 @@ Joc::Joc()
 
 void Joc::inicialitza(const string& nomFitxer/* int const columna, TipusFigura const tipusFigura, int const estat*/) //REVISAR, SENSE ACABAR (NOMES PROVISIONAL)
 {
-	ifstream arxiu;
-	arxiu.open(nomFitxer);
+	ifstream arxiu(nomFitxer);
 
 	if (arxiu.is_open())
 	{
@@ -28,11 +27,12 @@ void Joc::inicialitza(const string& nomFitxer/* int const columna, TipusFigura c
 		m_figuraCaient.setPosicioY(--fila);*/
 
 		//llegir les dades del tauler
+		int valor;
 		for (int i = 0; i < MAX_FILA; i++)
 		{
 			for (int j = 0; j < MAX_COL; j++)
 			{
-				int valor;
+				
 				arxiu >> valor;
 				m_taulerJoc.setCasella(i, j, valor);
 			}
