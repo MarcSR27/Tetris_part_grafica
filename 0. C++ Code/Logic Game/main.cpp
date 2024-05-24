@@ -37,10 +37,10 @@
 int main(int argc, const char* argv[])
 {
     Partida game;
-    string fitxerInicial = "fitxerInicial.txt";
-    string fitxerFigures = "fitxerFigures.txt";
+    string fitxerInicial = "data\/Games\/partida.txt";
+    string fitxerFigures = "data\/Games\/figures.txt";
     string fitxerMov = "fitxerMov.txt";
-    string fitxerPuntuacions = "puntuacions.txt";
+    string fitxerPuntuacions = "data\/Games\/puntuacions.txt";
 
     int mode = 0;
 
@@ -80,7 +80,7 @@ int main(int argc, const char* argv[])
         }
     } while ((opcio != 1) and (opcio != 2) and (opcio != 3) and (opcio != 4));
     
-    if (estaJugant) // si mira puntuacions o surt, no esta jugant
+    while (estaJugant) // si mira puntuacions o surt, no esta jugant
     {
         //Instruccions necesaries per poder incloure la llibreria i que trobi el main
         SDL_SetMainReady();
@@ -119,8 +119,24 @@ int main(int argc, const char* argv[])
 
         game.escriuPuntuacio(fitxerPuntuacions);
         //Instruccio necesaria per alliberar els recursos de la llibreria 
+       /*
+        //SDL_RenderClear(g_Video.renderer);
+        //SDL_DestroyRenderer(g_Video.renderer);
+        //SDL_DestroyWindow(g_Video.window);
+
+        cout << "Vols tornar a jugar? (s/n)" << endl;
+        char resposta;
+        cin >> resposta;
+        if (resposta == 's')
+        {
+            estaJugant = true;
+            //SDL_ShowWindow(g_Video.window);
+        }
         SDL_Quit();
+       */
     }
+   
+
     return 0;
 }
 

@@ -23,7 +23,9 @@ void Partida::inicialitza(int const mode, const string& fitxerInicial, const str
     {
         //ACTUALITZA EL TAULER AL SEU ESTAT INICIAL
 
-       m_joc.inicialitza(fitxerInicial);
+       m_joc.inicialitza(fitxerInicial, fitxerFigures, fitxerMoviments); //No acabada
+       m_joc.modeTest();
+      
 
         //GUARDA LES FIGURES QUE APAREIXERAN
 
@@ -77,7 +79,7 @@ void Partida::puntuacioINivell(int const filesEliminades)
         m_puntuacio += (10 + puntsExtra);
 
         //ACTUALITZA NIVELL
-        if (m_puntuacio >= m_nivell * 1000)
+        if (m_puntuacio >= m_nivell * 500)
         {
             ++m_nivell;
             m_incrementVelocitat = m_incrementVelocitat + m_incrementVelocitat * 0.25;
@@ -177,14 +179,13 @@ void Partida::actualitza(int const mode, double deltaTime)
     //MOSTRAR TEXT
     if (!m_partidaAcabada)
     {
-        string msg = "Fila: " + to_string(m_joc.getFilaFigura()) + ", Columna: " + to_string(m_joc.getColFigura());
-        GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER, POS_Y_TAULER - 50, 1.0, msg);
+        
 
         string puntuacio = "Puntuacio: " + to_string(m_puntuacio);
-        GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER + 260 , POS_Y_TAULER - 80, 1.0, puntuacio);
+        GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER + 260 , POS_Y_TAULER - 60, 1.0, puntuacio);
 
         string nivell = "Nivell: " + to_string(m_nivell);
-        GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER + 260, POS_Y_TAULER - 110, 1.0, nivell);
+        GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER + 260, POS_Y_TAULER - 90, 1.0, nivell);
 
     }
     else
@@ -193,7 +194,7 @@ void Partida::actualitza(int const mode, double deltaTime)
         GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER, POS_Y_TAULER - 50, 1.0, msg);
 
         string escape = "Prem ESCAPE per sortir";
-        GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER, POS_Y_TAULER - 30, 1.0, escape);
+        GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER, POS_Y_TAULER - 20, 1.0, escape);
         
     }
 
@@ -228,8 +229,7 @@ void Partida::escriuPuntuacio(const string& nomFitxer) // Separa en dues funcion
         {
             puntuacions.push_back({ nomJugador, puntuacio });
             fitxer >> nomJugador >> puntuacio;
-        }
-        
+        }      
     }
     fitxer.close();
 

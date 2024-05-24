@@ -130,22 +130,5 @@
     <Filter Include="Logic Game\Source files">
       <UniqueIdentifier>{cbe27357-35d7-40c4-ae4b-908075278f4d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Logic Game\Arxius_txt">
-      <UniqueIdentifier>{ee5b5b4e-1c3e-44f3-a2ca-949118d3f165}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="puntuacions.txt">
-      <Filter>Logic Game\Arxius_txt</Filter>
-    </Text>
-    <Text Include="fitxerInicial.txt">
-      <Filter>Logic Game\Arxius_txt</Filter>
-    </Text>
-    <Text Include="fitxerFigures.txt">
-      <Filter>Logic Game\Arxius_txt</Filter>
-    </Text>
-    <Text Include="fitxerMov.txt">
-      <Filter>Logic Game\Arxius_txt</Filter>
-    </Text>
   </ItemGroup>
 </Project>

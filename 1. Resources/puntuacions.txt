@@ -1,7 +1,0 @@
-aaa 1610
-Dani 1080
-bbb 980
-qqq 530
-sss 230
-mm 200
-marc 200

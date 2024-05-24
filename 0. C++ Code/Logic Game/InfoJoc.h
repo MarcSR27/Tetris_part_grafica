@@ -39,6 +39,16 @@ typedef enum
     FIGURA_S
 } TipusFigura;
 
+typedef enum
+{
+    MOVIMENT_ESQUERRA = 0,
+    MOVIMENT_DRETA = 1,
+    MOVIMENT_GIR_HORARI = 2,
+    MOVIMENT_GIR_ANTI_HORARI = 3,
+    MOVIMENT_BAIXA = 4,
+    MOVIMENT_BAIXA_FINAL = 5,
+} TipusMoviment;
+
 // Tamany de la pantalla gràfica
 const int SCREEN_SIZE_X = 600;
 const int SCREEN_SIZE_Y = 700;

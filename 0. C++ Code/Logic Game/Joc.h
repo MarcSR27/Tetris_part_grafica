@@ -5,13 +5,14 @@
 #include "Tauler.h"
 #include "Figura.h"
 #include <string>
+#include <list>
 using namespace std;
 
 class Joc
 {
 public:
 	Joc();
-	void inicialitza(const string& nomFitxer/* int const columna, TipusFigura const tipusFigura, int const estat*/);
+	void inicialitza(const string& fitxerInicial, const string& fitxerFigures, const string& fitxerMoviments);
 	void escriuTauler(const string& nomFitxer);
 
 	bool giraFigura(DireccioGir sentit);
@@ -25,6 +26,7 @@ public:
 	int getFilaFigura() { return m_figuraCaient.getPosicioY(); }
 	int getColFigura() { return m_figuraCaient.getPosicioX(); }
 
+	void modeTest(); // No acabada
 
 private:
 	Figura m_figuraCaient;
@@ -36,6 +38,8 @@ private:
 	void escriuFiguraAlTauler();
 	void esborraFiguraDelTauler();
 	bool comprovaMoviment(Figura& figuraSeguent); //comprova si la figura a posar colusiona amb una altra o sobrepassa els limits del tauler 
+
+	list<Figura> m_figuraTest;
 };
 
 

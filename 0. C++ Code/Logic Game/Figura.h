@@ -14,6 +14,7 @@ typedef enum
     GIR_ANTI_HORARI
 } DireccioGir;
 
+
 class Figura
 {
 public:
