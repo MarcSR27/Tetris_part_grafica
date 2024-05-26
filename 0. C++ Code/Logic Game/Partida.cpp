@@ -22,25 +22,25 @@ void Partida::inicialitza(int const mode, const string& fitxerInicial, const str
     if (mode == 1) //mode test
     {
         //ACTUALITZA EL TAULER AL SEU ESTAT INICIAL
-      
-       m_joc.inicialitzaTaulerTest(fitxerInicial);
-      
+
+        m_joc.inicialitzaTaulerTest(fitxerInicial);
+
         //GUARDA LES FIGURES QUE APAREIXERAN
 
-      m_figuraTest = m_joc.inicialitzaFiguresTest(fitxerFigures, m_figuraTest);
-      itFigura = m_figuraTest.begin(); 
+        m_figuraTest = m_joc.inicialitzaFiguresTest(fitxerFigures, m_figuraTest);
+        itFigura = m_figuraTest.begin();
 
-       if (itFigura != m_figuraTest.end() and !m_figuraTest.empty())
-       {
-           Figura figuraTest = *itFigura; //per accedir a la figura a la posicio on estigui l'iterador
-           m_joc.setFigura(figuraTest.getPosicioX(), figuraTest.getTipus(), figuraTest.getEstat(), figuraTest.getPosicioY());
-           itFigura++;
-       }
+        if (itFigura != m_figuraTest.end() and !m_figuraTest.empty())
+        {
+            Figura figuraTest = *itFigura; //per accedir a la figura a la posicio on estigui l'iterador
+            m_joc.setFigura(figuraTest.getPosicioX(), figuraTest.getTipus(), figuraTest.getEstat(), figuraTest.getPosicioY());
+            itFigura++;
+        }
 
         //GUARDA ELS MOVIMENTS QUE ES FARAN
 
-       m_movimentTest = m_joc.inicialitzaMovimentsTest(fitxerMoviments, m_movimentTest);
-       itMov = m_movimentTest.begin();
+        m_movimentTest = m_joc.inicialitzaMovimentsTest(fitxerMoviments, m_movimentTest);
+        itMov = m_movimentTest.begin();
 
     }
     else //mode normal
@@ -51,11 +51,7 @@ void Partida::inicialitza(int const mode, const string& fitxerInicial, const str
         //GENERA ALEATORIAMENT UNA FIGURA
         int estat, columna;
         TipusFigura tipusFigura;
-        /*
-        tipusFigura = generarTipusFiguraAleatoria();
-        columna = generarNumAleatori(0, MAX_COL - 1);
-        estat = generarNumAleatori(0, 3);
-        */
+        
         do
         {
             tipusFigura = generarTipusFiguraAleatoria(); //No sale la figura hasta que se genere bien
@@ -115,11 +111,11 @@ void Partida::figuraAleatoria()
 
     do
     {
-        
+
         tipusFigura = generarTipusFiguraAleatoria();
         columna = generarNumAleatori(0, MAX_COL - 1);
         estat = generarNumAleatori(0, 3);
-        
+
 
     } while (!m_joc.setFigura(columna, tipusFigura, estat, 0));
 }
@@ -188,9 +184,9 @@ void Partida::actualitza(int const mode, double deltaTime)
         case 3: m_joc.giraFigura(GIR_ANTI_HORARI); break;
         case 4: baixa = m_joc.baixaFigura(filesEliminades); break;
         case 5: do
-            {
-                baixa = m_joc.baixaFigura(filesEliminades);
-            } while (baixa);
+        {
+            baixa = m_joc.baixaFigura(filesEliminades);
+        } while (baixa);
         break;
         default: baixa = m_joc.baixaFigura(filesEliminades); break; //posem per defecte que baixi
         }
@@ -221,10 +217,10 @@ void Partida::actualitza(int const mode, double deltaTime)
     //MOSTRAR TEXT
     if (!m_partidaAcabada)
     {
-        
+
 
         string puntuacio = "Puntuacio: " + to_string(m_puntuacio);
-        GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER + 260 , POS_Y_TAULER - 60, 1.0, puntuacio);
+        GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER + 260, POS_Y_TAULER - 60, 1.0, puntuacio);
 
         string nivell = "Nivell: " + to_string(m_nivell);
         GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER + 260, POS_Y_TAULER - 90, 1.0, nivell);
@@ -237,7 +233,7 @@ void Partida::actualitza(int const mode, double deltaTime)
 
         string escape = "Prem ESCAPE per sortir";
         GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER, POS_Y_TAULER - 20, 1.0, escape);
-        
+
     }
 
     if (!baixa) //la figura s'ha posat al tauler
@@ -250,13 +246,13 @@ void Partida::actualitza(int const mode, double deltaTime)
             m_partidaAcabada = true; //provisional
 
         }
-        else if(mode == 0)//generem la seguent figura aleatoria al mode normal
+        else if (mode == 0)//generem la seguent figura aleatoria al mode normal
         {
             figuraAleatoria();
         }
         else // estem en mode test
         {
-           
+
 
             if (itFigura != m_figuraTest.end())
             {
@@ -268,7 +264,7 @@ void Partida::actualitza(int const mode, double deltaTime)
             {
                 m_partidaAcabada = true;
             }
-            
+
         }
     }
 }
@@ -287,7 +283,7 @@ void Partida::escriuPuntuacio(const string& nomFitxer) // Separa en dues funcion
         {
             puntuacions.push_back({ nomJugador, puntuacio });
             fitxer >> nomJugador >> puntuacio;
-        }      
+        }
     }
     fitxer.close();
 
@@ -295,7 +291,7 @@ void Partida::escriuPuntuacio(const string& nomFitxer) // Separa en dues funcion
     cin >> m_nomJugador;
 
     puntuacions.push_back({ m_nomJugador, m_puntuacio });
-    
+
     for (list<Jugador>::iterator it = puntuacions.begin(); it != puntuacions.end(); ++it)
     {
         for (list<Jugador>::iterator it2 = next(it); it2 != puntuacions.end(); ++it2)
@@ -318,7 +314,7 @@ void Partida::escriuPuntuacio(const string& nomFitxer) // Separa en dues funcion
         fitxerEscritura.close();
     }
 
-   
+
 }
 
 void Partida::mostraPuntuacio(const string& nomFitxer)
