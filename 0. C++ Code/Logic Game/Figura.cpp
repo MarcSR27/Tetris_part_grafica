@@ -33,6 +33,7 @@ Figura::Figura(TipusFigura tipus, int estat)
     string arxiu;
 
     m_tipus = tipus;
+    m_estat = estat;
 
     for (int fila = 0; fila < MAX_ALCADA; fila++)
     {
@@ -112,14 +113,14 @@ Figura::Figura(TipusFigura tipus, int estat)
 
 
     //COLOCA LA FIGURA A L'ESTAT DESITJAT
-    if (estat == 3)
+    if (m_estat == 3)
     {
         girarFigura(GIR_ANTI_HORARI);
     }
 
     else
     {
-        for (int i = 0; i < estat; i++)
+        for (int i = 0; i < m_estat; i++)
         {
             girarFigura(GIR_HORARI);
         }

@@ -38,6 +38,8 @@ public:
     int getPosicioY() { return m_posicioY; }
     int getCasellaFigura(int fila, int columna) { return m_formaFiguraActual[fila][columna]; }
 
+    void setEstat(int estat) { m_estat = estat; }
+    int getEstat() { return m_estat; }
 
     //segona Part
     void dibuixaFigura();
@@ -66,6 +68,8 @@ private:
     ColorFigura m_color;
     int m_posicioX; //coordenada x del quadrat pivot de la figura
     int m_posicioY; //coordenada y del quadrat pivot de la figura
+
+    int m_estat; //necesaria per al test, que guardi l'estat
 };
 
 

@@ -13,23 +13,9 @@ Joc::Joc()
 	m_nivell = 0;
 }
 
-void Joc::inicialitza(const string& fitxerInicial, const string& fitxerFigures, const string& fitxerMoviments) //REVISAR, SENSE ACABAR (NOMES PROVISIONAL)
+void Joc::inicialitzaTaulerTest(const string& fitxerInicial) //REVISAR, SENSE ACABAR (NOMES PROVISIONAL)
 {	//No acabada
-	ifstream fitxerFig;
-	fitxerFig.open(fitxerFigures);
-	if (fitxerFig.is_open())
-	{
-		int tipus, fila, columna, estat;
 
-		while (fitxerFig >> tipus >> fila >> columna >> estat)
-		{
-			Figura fig(static_cast<TipusFigura>(tipus), estat);
-			fig.setPosicioX(--columna);
-			fig.setPosicioY(--fila);
-			m_figuraTest.push_back(fig);
-		}
-	}
-	
 	ifstream fitxer;
 	fitxer.open(fitxerInicial);
 
@@ -53,27 +39,48 @@ void Joc::inicialitza(const string& fitxerInicial, const string& fitxerFigures, 
 	}
 	
 }
+list<Figura> Joc::inicialitzaFiguresTest(const string& fitxerFigures, list<Figura> m_figuraTest)
+{	
+	ifstream fitxerFig;
+	fitxerFig.open(fitxerFigures);
 
-void Joc::modeTest()
-{
-	std::list<Figura>::iterator it_figuraActual = m_figuraTest.begin();
-
-	while (it_figuraActual != m_figuraTest.end())
+	if (fitxerFig.is_open())
 	{
-		m_figuraCaient = *it_figuraActual;
+		int tipus, fila, columna, estat;
 
-		it_figuraActual++;
+		while (fitxerFig >> tipus >> fila >> columna >> estat)
+		{
+			Figura fig(static_cast<TipusFigura>(tipus), estat);
+			fig.setPosicioX(--columna);
+			fig.setPosicioY(--fila);
+			m_figuraTest.push_back(fig);
+		}
 	}
-		
+	return m_figuraTest;
 }
+list<TipusMoviment> Joc::inicialitzaMovimentsTest(const string& fitxerMoviments, list<TipusMoviment> m_movimentsTest)
+{
+	ifstream fitxerMov;
+	fitxerMov.open(fitxerMoviments);
 
-bool Joc::setFigura(int const columna, TipusFigura const tipus, int const estat)
+	if (fitxerMov.is_open())
+	{
+		int mov;
+
+		while (fitxerMov >> mov)
+		{
+			m_movimentsTest.push_back(static_cast<TipusMoviment>(mov));
+		}
+	}
+	return m_movimentsTest;
+}
+bool Joc::setFigura(int const columna, TipusFigura const tipus, int const estat, int const fila)
 {
 	Figura figura;
 	bool correcte = false;
 
 	figura = Figura(tipus, estat);
-	figura.setPosicioY(0);
+	figura.setPosicioY(fila);
 	figura.setPosicioX(columna);
 
 	if (comprovaMoviment(figura))

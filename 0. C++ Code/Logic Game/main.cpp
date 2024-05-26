@@ -29,6 +29,8 @@
 #include "./Partida.h"
 #include "./InfoJoc.h"
 
+#include <thread>
+#include <chrono> // per poder veure com es mouen les figures, unicament en el mode test
 
 //eliminar
 #include "GraphicManager.h"
@@ -39,7 +41,7 @@ int main(int argc, const char* argv[])
     Partida game;
     string fitxerInicial = "data\/Games\/partida.txt";
     string fitxerFigures = "data\/Games\/figures.txt";
-    string fitxerMov = "fitxerMov.txt";
+    string fitxerMov = "data\/Games\/moviments.txt";
     string fitxerPuntuacions = "data\/Games\/puntuacions.txt";
 
     int mode = 0;
@@ -80,7 +82,7 @@ int main(int argc, const char* argv[])
         }
     } while ((opcio != 1) and (opcio != 2) and (opcio != 3) and (opcio != 4));
     
-    while (estaJugant) // si mira puntuacions o surt, no esta jugant
+    if (estaJugant) // si mira puntuacions o surt, no esta jugant
     {
         //Instruccions necesaries per poder incloure la llibreria i que trobi el main
         SDL_SetMainReady();
@@ -113,30 +115,24 @@ int main(int argc, const char* argv[])
 
             // Actualitza la pantalla
             pantalla.update();
+            if (mode == 1)
+            {
+                this_thread::sleep_for(std::chrono::seconds(1)); // un segon per moviment
+            }
 
         } while (!Keyboard_GetKeyTrg(KEYBOARD_ESCAPE));
+        SDL_Quit();
         // Sortim del bucle si pressionem ESC
-
-        game.escriuPuntuacio(fitxerPuntuacions);
-        //Instruccio necesaria per alliberar els recursos de la llibreria 
-       /*
-        //SDL_RenderClear(g_Video.renderer);
-        //SDL_DestroyRenderer(g_Video.renderer);
-        //SDL_DestroyWindow(g_Video.window);
-
-        cout << "Vols tornar a jugar? (s/n)" << endl;
         char resposta;
+        cout << "Vols guardar la teva puntuacio? (s/n)" << endl;
         cin >> resposta;
         if (resposta == 's')
         {
-            estaJugant = true;
-            //SDL_ShowWindow(g_Video.window);
+            game.escriuPuntuacio(fitxerPuntuacions);
         }
-        SDL_Quit();
-       */
+        //Instruccio necesaria per alliberar els recursos de la llibreria 
+        
     }
-   
-
     return 0;
 }
 
