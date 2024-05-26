@@ -9,8 +9,8 @@ Joc::Joc()
 {
 	m_taulerJoc = Tauler();
 	m_figuraCaient = Figura();
-	m_puntuacio = 0;
-	m_nivell = 0;
+	//m_puntuacio = 0;
+	//m_nivell = 0;
 }
 
 void Joc::inicialitzaTaulerTest(const string& fitxerInicial) //REVISAR, SENSE ACABAR (NOMES PROVISIONAL)
@@ -24,8 +24,8 @@ void Joc::inicialitzaTaulerTest(const string& fitxerInicial) //REVISAR, SENSE AC
 		int fila, columna, estat, tipus;
 		fitxer >> tipus >> fila >> columna >> estat;
 
-		
-		
+
+
 		for (int i = 0; i < MAX_FILA; i++)
 		{
 			for (int j = 0; j < MAX_COL; j++)
@@ -37,10 +37,10 @@ void Joc::inicialitzaTaulerTest(const string& fitxerInicial) //REVISAR, SENSE AC
 		}
 		fitxer.close();
 	}
-	
+
 }
 list<Figura> Joc::inicialitzaFiguresTest(const string& fitxerFigures, list<Figura> m_figuraTest)
-{	
+{
 	ifstream fitxerFig;
 	fitxerFig.open(fitxerFigures);
 
