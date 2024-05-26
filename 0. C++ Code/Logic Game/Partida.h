@@ -29,9 +29,9 @@ public:
 
     ////
     int generarNumAleatori(int min, int max); //per generar columna i estat aleatori
-    TipusFigura generarTipusFiguraAleatoria(/*TipusFigura min, TipusFigura max*/); //genera tipus de figura de forma aleatoria
-    //void dibuixaFigura(Figura& figura);
-    //void movimentFigura(Figura& figura);
+    TipusFigura generarTipusFiguraAleatoria(); //genera tipus de figura de forma aleatoria
+    
+
     void figuraAleatoria(); //genera la figura aleatoria
     void puntuacioINivell(int const filesEliminades);
 
@@ -46,18 +46,21 @@ private:
 
     ////////
     Joc m_joc;
+    
     int m_nivell;
     float m_incrementVelocitat; // per fer que augmenti la velocitat de caiguda de figuras
-    int m_puntuacio; //revisar si cal (ja esta en joc)
-    //TipusTecla* m_moviment;
+    int m_puntuacio;
     bool m_partidaAcabada; //provisional
+    
     //falta atribut per guardar les figures que cauran
     //int m_mode;
+    
     string m_nomJugador; // provisional, ya es veura si es necesaria
+    
     list<Figura> m_figuraTest; //creem la lista per guardar les figures pel test
     list<Figura>::iterator itFigura; //iterador, per pasar les seguents figures
 
-    list<TipusMoviment> m_movimentTest; //creem la lista per guardar les figures pel test
+    list<TipusMoviment> m_movimentTest; //creem la lista per guardar els moviments pel test
     list<TipusMoviment>::iterator itMov; //iterador, per pasar les seguents figures
 };
 
