@@ -35,14 +35,14 @@ private:
 	Figura m_figuraCaient;
 	Tauler m_taulerJoc;
 
-	int m_puntuacio;
-	int m_nivell;
+	//int m_puntuacio;
+	//int m_nivell;
 
 	void escriuFiguraAlTauler();
 	void esborraFiguraDelTauler();
 	bool comprovaMoviment(Figura& figuraSeguent); //comprova si la figura a posar colusiona amb una altra o sobrepassa els limits del tauler 
 
-	
+
 };
 
 
