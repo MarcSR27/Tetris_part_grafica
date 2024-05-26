@@ -26,63 +26,28 @@
 
 #endif
 
-#include "./Partida.h"
+#include "./Tetris.h"
 #include "./InfoJoc.h"
 
 #include <thread>
 #include <chrono> // per poder veure com es mouen les figures, unicament en el mode test
 
-//eliminar
-#include "GraphicManager.h"
+//
+//#include "GraphicManager.h"
 
 
 int main(int argc, const char* argv[])
 {
-    Partida game;
+    Tetris game;
     string fitxerInicial = "data\/Games\/partida.txt";
     string fitxerFigures = "data\/Games\/figures.txt";
     string fitxerMov = "data\/Games\/moviments.txt";
     string fitxerPuntuacions = "data\/Games\/puntuacions.txt";
 
-    int mode = 0;
+    bool estaJugant = game.menuInicial(fitxerPuntuacions); 
 
-    int opcio;
-    bool estaJugant = true;
-   
-    do
-    {
-        cout << "---------------------------------------------------------------------------------------------" << endl;
-        cout << "Selecciona una opcio:" << endl << endl;
-        cout << "1. Jugar mode normal" << endl;
-        cout << "2. Jugar mode test" << endl;
-        cout << "3. Visualitzar llista de millors puntuacions" << endl;
-        cout << "4. Sortir del programa" << endl;
-        cout << "---------------------------------------------------------------------------------------------" << endl;
-
-        cin >> opcio;
-        switch (opcio)
-        {
-        case 1: mode = 0; break;
-        case 2: mode = 1; break;
-        case 3: game.mostraPuntuacio(fitxerPuntuacions);
-            cout << "Vols tornar al menu? (s/n)" << endl;
-            char resposta;
-            cin >> resposta;
-            if (resposta == 's')
-            {
-                opcio = -1;
-            }
-            else
-            {
-                estaJugant = false;
-            }
-            break;
-        case 4: estaJugant = false; break;
-        default: cout << "Tens que escriure el numero d'una de les opcions (1, 2, 3, 4)" << endl;  break;
-        }
-    } while ((opcio != 1) and (opcio != 2) and (opcio != 3) and (opcio != 4));
-    
-    if (estaJugant) // si mira puntuacions o surt, no esta jugant
+    //if (estaJugant) // si mira puntuacions o surt, no esta jugant
+    while (estaJugant)
     {
         //Instruccions necesaries per poder incloure la llibreria i que trobi el main
         SDL_SetMainReady();
@@ -97,10 +62,7 @@ int main(int argc, const char* argv[])
         Uint64 LAST = 0;
         double deltaTime = 0;
 
-        //game.figuraAleatoria();
-
-
-        game.inicialitza(mode, fitxerInicial,fitxerFigures,fitxerMov);
+        game.inicialitza(fitxerInicial, fitxerFigures, fitxerMov);
 
         do
         {
@@ -111,28 +73,30 @@ int main(int argc, const char* argv[])
             // Captura tots els events de ratolí i teclat de l'ultim cicle
             pantalla.processEvents();
 
-            game.actualitza(mode, deltaTime);
+            game.juga(deltaTime);
 
             // Actualitza la pantalla
             pantalla.update();
-            if (mode == 1)
+            if (game.getMode() == 1)
             {
                 this_thread::sleep_for(std::chrono::seconds(1)); // un segon per moviment
             }
 
         } while (!Keyboard_GetKeyTrg(KEYBOARD_ESCAPE));
         SDL_Quit();
-        // Sortim del bucle si pressionem ESC
-        char resposta;
-        cout << "Vols guardar la teva puntuacio? (s/n)" << endl;
-        cin >> resposta;
-        if (resposta == 's')
+
+        if (game.finalPartida(fitxerPuntuacions))
         {
-            game.escriuPuntuacio(fitxerPuntuacions);
+            //game = Tetris();
+            estaJugant = game.menuInicial(fitxerPuntuacions); //NO FUNCIONA LA PART DE TORNAR A JUGAR UNA PARTIDA
         }
-        //Instruccio necesaria per alliberar els recursos de la llibreria 
-        
-    }
+        else
+        {
+            estaJugant = false;
+        }
+
+    } //while (estaJugant);
+
     return 0;
 }
 
