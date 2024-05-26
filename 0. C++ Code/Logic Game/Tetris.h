@@ -9,17 +9,22 @@ using namespace std;
 class Tetris
 {
 public:
-	Tetris() { m_partida = Partida(); }
+	Tetris();
 
-	void juga(); //PROVISIONAL
-	void mostraPuntuacions(); //PROVISIONAL
-	void inicialitza();
+	void juga(double const deltaTime); //PROVISIONAL
+	//void mostraPuntuacions(); //PROVISIONAL
+	void inicialitza(string const fitxerInicial, string const fitxerFigures, string const fitxerMov);
 
-	
+	bool menuInicial(string const fitxerPuntuacions);
+	int getMode() const { return m_mode; }
+	bool finalPartida(string const fitxerPuntuacions);
+
+
 	//void menuInicial();
 
 private:
 	Partida m_partida;
+	int m_mode;
 };
 
 //void menuInicial(int& mode); //PROVISIONAL
