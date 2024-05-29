@@ -18,7 +18,7 @@ public:
 	bool menuInicial(string const fitxerPuntuacions);
 	int getMode() const { return m_mode; }
 	bool finalPartida(string const fitxerPuntuacions);
-
+	void imprimirMenu();
 
 	//void menuInicial();
 

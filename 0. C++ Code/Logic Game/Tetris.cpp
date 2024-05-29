@@ -1,4 +1,4 @@
-#include "Tetris.h"
+    #include "Tetris.h"
 #include <cstdlib>
 
 Tetris::Tetris()
@@ -18,24 +18,29 @@ bool Tetris::menuInicial(string const fitxerPuntuacions)
     bool estaJugant = true;
     do
     {
-        cout << "___ TETRIS ___" << endl;
-        cout << "---------------------------------------------------------------------------------------------" << endl;
-        cout << "Selecciona una opcio:" << endl << endl;
-        cout << "1. Jugar mode normal" << endl;
-        cout << "2. Jugar mode test" << endl;
-        cout << "3. Visualitzar llista de millors puntuacions" << endl;
-        cout << "4. Sortir del programa" << endl;
-        cout << "---------------------------------------------------------------------------------------------" << endl;
+        imprimirMenu();
 
         cin >> opcio;
+
         switch (opcio)
         {
-        case 1: m_mode = 0; break;
-        case 2: m_mode = 1; break;
-        case 3: m_partida.mostraPuntuacio(fitxerPuntuacions);
+        case 1: //Modo jugar partida
+            m_mode = 0; 
+            break;
+
+
+        case 2: //Modo partida tes
+            m_mode = 1; 
+            break;
+
+
+        case 3:  //Mostrar puntuaciones 
+            
+            m_partida.mostraPuntuacio(fitxerPuntuacions);
             cout << "Vols tornar al menu? (s/n)" << endl;
             char resposta;
             cin >> resposta;
+
             if (resposta == 's')
             {
                 system("cls");
@@ -46,8 +51,14 @@ bool Tetris::menuInicial(string const fitxerPuntuacions)
                 estaJugant = false;
             }
             break;
-        case 4: estaJugant = false; break;
-        default: cout << "Tens que escriure el numero d'una de les opcions (1, 2, 3, 4)" << endl;  break;
+
+        case 4: //Cerrar juego
+            estaJugant = false; 
+            break;
+
+        default: 
+            cout << "Tens que escriure el numero d'una de les opcions (1, 2, 3, 4)" << endl;
+            break;
         }
 
     } while ((opcio != 1) and (opcio != 2) and (opcio != 3) and (opcio != 4));
@@ -81,4 +92,16 @@ bool Tetris::finalPartida(string const fitxerPuntuacions)
     }
 
     return final;
+}
+
+void Tetris::imprimirMenu()
+{
+    cout << "___ TETRIS ___" << endl;
+    cout << "---------------------------------------------------------------------------------------------" << endl;
+    cout << "Selecciona una opcio:" << endl << endl;
+    cout << "1. Jugar mode normal" << endl;
+    cout << "2. Jugar mode test" << endl;
+    cout << "3. Visualitzar llista de millors puntuacions" << endl;
+    cout << "4. Sortir del programa" << endl;
+    cout << "---------------------------------------------------------------------------------------------" << endl;
 }
