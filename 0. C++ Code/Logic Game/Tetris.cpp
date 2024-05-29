@@ -1,4 +1,5 @@
 #include "Tetris.h"
+#include <cstdlib>
 
 Tetris::Tetris()
 {
@@ -17,6 +18,7 @@ bool Tetris::menuInicial(string const fitxerPuntuacions)
     bool estaJugant = true;
     do
     {
+        cout << "___ TETRIS ___" << endl;
         cout << "---------------------------------------------------------------------------------------------" << endl;
         cout << "Selecciona una opcio:" << endl << endl;
         cout << "1. Jugar mode normal" << endl;
@@ -36,6 +38,7 @@ bool Tetris::menuInicial(string const fitxerPuntuacions)
             cin >> resposta;
             if (resposta == 's')
             {
+                system("cls");
                 opcio = -1;
             }
             else

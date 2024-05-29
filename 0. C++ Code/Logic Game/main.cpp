@@ -31,6 +31,8 @@
 
 #include <thread>
 #include <chrono> // per poder veure com es mouen les figures, unicament en el mode test
+#include <cstdlib>
+
 
 //
 //#include "GraphicManager.h"
@@ -45,7 +47,7 @@ int main(int argc, const char* argv[])
     string fitxerPuntuacions = "data\/Games\/puntuacions.txt";
 
     bool estaJugant = game.menuInicial(fitxerPuntuacions); 
-
+    Screen pantalla(SCREEN_SIZE_X, SCREEN_SIZE_Y);
     //if (estaJugant) // si mira puntuacions o surt, no esta jugant
     while (estaJugant)
     {
@@ -54,14 +56,14 @@ int main(int argc, const char* argv[])
         SDL_Init(SDL_INIT_VIDEO);
 
         //Inicialitza un objecte de la classe Screen que s'utilitza per gestionar la finestra grafica
-        Screen pantalla(SCREEN_SIZE_X, SCREEN_SIZE_Y);
+        
         //Mostrem la finestra grafica
         pantalla.show();
 
         Uint64 NOW = SDL_GetPerformanceCounter();
         Uint64 LAST = 0;
         double deltaTime = 0;
-
+        
         game.inicialitza(fitxerInicial, fitxerFigures, fitxerMov);
 
         do
@@ -83,20 +85,25 @@ int main(int argc, const char* argv[])
             }
 
         } while (!Keyboard_GetKeyTrg(KEYBOARD_ESCAPE));
-        SDL_Quit();
+        
 
         if (game.finalPartida(fitxerPuntuacions))
         {
             //game = Tetris();
+            system("cls");
             estaJugant = game.menuInicial(fitxerPuntuacions); //NO FUNCIONA LA PART DE TORNAR A JUGAR UNA PARTIDA
         }
         else
         {
             estaJugant = false;
+            
         }
-
+        
+        pantalla.close();
+       
+        
     } //while (estaJugant);
-
+    pantalla.~Screen();
     return 0;
 }
 

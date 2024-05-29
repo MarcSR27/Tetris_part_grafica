@@ -132,7 +132,7 @@ TipusFigura Partida::generarTipusFiguraAleatoria(/*TipusFigura min, TipusFigura 
 {
     random_device rd;
     mt19937 gen(rd());
-    uniform_int_distribution<> distrib(static_cast<int>(TipusFigura::FIGURA_O), static_cast<int>(TipusFigura::FIGURA_S));
+    uniform_int_distribution<> distrib(static_cast<int>(TipusFigura::FIGURA_O), static_cast<int>(TipusFigura::FIGURA_U));
     int valorAleatorio = distrib(gen);
 
     return static_cast<TipusFigura>(valorAleatorio); //Pasar de int a Tipus Figura, que no deixaba retornar
@@ -223,16 +223,16 @@ void Partida::actualitza(int const mode, double deltaTime)
         GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER + 260, POS_Y_TAULER - 60, 1.0, puntuacio);
 
         string nivell = "Nivell: " + to_string(m_nivell);
-        GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER + 260, POS_Y_TAULER - 90, 1.0, nivell);
+        GraphicManager::getInstance()->drawFont(FONT_GREEN_30, POS_X_TAULER + 260, POS_Y_TAULER - 90, 1.0, nivell);
 
     }
     else
     {
         string msg = "Puntuacio Final: " + to_string(m_puntuacio) + ", Nivell: " + to_string(m_nivell);
-        GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER, POS_Y_TAULER - 50, 1.0, msg);
+        GraphicManager::getInstance()->drawFont(FONT_GREEN_30, POS_X_TAULER, POS_Y_TAULER - 50, 1.0, msg);
 
-        string escape = "Prem ESCAPE per sortir";
-        GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER, POS_Y_TAULER - 20, 1.0, escape);
+        string fi = "___ GAME OVER ___";
+        GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER - 50, POS_Y_TAULER , 1.5, fi);
 
     }
 
@@ -325,12 +325,17 @@ void Partida::mostraPuntuacio(const string& nomFitxer)
         string nomJugador;
         int puntuacio;
         fitxer >> nomJugador >> puntuacio;
-        while (!fitxer.eof())
+        cout << endl;
+        cout << " Top 10 millors puntuacions:" << endl;
+        int i = 0;
+        cout << "------------------------------------------------------------" << endl;
+        while (!fitxer.eof() and i <= 10)
         {
             cout << nomJugador << " " << puntuacio << endl;
             fitxer >> nomJugador >> puntuacio;
+            i++;
         }
-
+        cout << "------------------------------------------------------------" << endl;
     }
     fitxer.close();
 }

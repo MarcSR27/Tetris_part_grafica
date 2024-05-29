@@ -12,7 +12,7 @@ typedef enum
     NO_TECLA
 } TipusTecla;
 
-const int N_TIPUS_FIGURES = 7;
+const int N_TIPUS_FIGURES = 8;
 
 typedef enum
 {
@@ -24,6 +24,7 @@ typedef enum
     COLOR_BLAUFOSC,
     COLOR_VERMELL,
     COLOR_VERD,
+    COLOR_BLANC,
     NO_COLOR
 } ColorFigura;
 
@@ -36,7 +37,8 @@ typedef enum
     FIGURA_L,
     FIGURA_J,
     FIGURA_Z,
-    FIGURA_S
+    FIGURA_S,
+    FIGURA_U
 } TipusFigura;
 
 typedef enum

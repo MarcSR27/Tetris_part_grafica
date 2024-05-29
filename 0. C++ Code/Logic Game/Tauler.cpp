@@ -137,6 +137,7 @@ void Tauler::dibuixaTauler()
 				case COLOR_BLAUFOSC: bloc = GRAFIC_QUADRAT_BLAUFOSC; break;
 				case COLOR_VERMELL: bloc = GRAFIC_QUADRAT_VERMELL; break;
 				case COLOR_VERD: bloc = GRAFIC_QUADRAT_VERD; break;
+				case COLOR_BLANC: bloc = GRAFIC_QUADRAT_BLANC; break;
 				}
 
 				GraphicManager::getInstance()->drawSprite(bloc, POS_X_TAULER + ((1 + j) * MIDA_QUADRAT), POS_Y_TAULER + ((i)*MIDA_QUADRAT), false);

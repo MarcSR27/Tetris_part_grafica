@@ -26,6 +26,7 @@ public:
   void update();
   void init();
   bool isExit() const;
+  void close();
 
 private:
   void initializeHardware(int new_resolution_x, int new_resolution_y, int fps_maximos, bool FullScreen);

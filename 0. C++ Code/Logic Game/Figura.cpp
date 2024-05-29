@@ -107,6 +107,16 @@ Figura::Figura(TipusFigura tipus, int estat)
 
         m_color = COLOR_GROC;
         break;
+
+    case FIGURA_U:
+        m_formaFiguraActual[0][0] = COLOR_BLANC;
+        m_formaFiguraActual[0][2] = COLOR_BLANC;
+        m_formaFiguraActual[1][0] = COLOR_BLANC;
+        m_formaFiguraActual[1][1] = COLOR_BLANC;
+        m_formaFiguraActual[1][2] = COLOR_BLANC;
+
+        m_color = COLOR_BLANC;
+        break;
     default:
         break;
     }
@@ -228,6 +238,8 @@ void Figura::dibuixaFigura()
     case COLOR_BLAUFOSC: bloc = GRAFIC_QUADRAT_BLAUFOSC; break;
     case COLOR_VERMELL: bloc = GRAFIC_QUADRAT_VERMELL; break;
     case COLOR_VERD: bloc = GRAFIC_QUADRAT_VERD; break;
+    case COLOR_BLANC: bloc = GRAFIC_QUADRAT_BLANC; break;
+
     }
 
     for (int i = 0; i < MAX_ALCADA; i++)
