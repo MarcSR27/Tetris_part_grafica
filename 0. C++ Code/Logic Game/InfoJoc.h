@@ -9,6 +9,7 @@ typedef enum
     TECLA_ABAIX,
     TECLA_ESPAI,
     TECLA_ESCAPE,
+    TECLA_ENTER,
     NO_TECLA
 } TipusTecla;
 

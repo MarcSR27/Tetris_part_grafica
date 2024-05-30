@@ -91,6 +91,7 @@ int main(int argc, const char* argv[])
         {
             //game = Tetris();
             system("cls");
+            //cout << flush;
             estaJugant = game.menuInicial(fitxerPuntuacions); //NO FUNCIONA LA PART DE TORNAR A JUGAR UNA PARTIDA
         }
         else

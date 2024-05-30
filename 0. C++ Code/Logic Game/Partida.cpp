@@ -1,7 +1,11 @@
 #include "Partida.h"
 #include "InfoJoc.h"
 #include "GraphicManager.h"
+#include <string>
 
+
+#include <mmsystem.h> // Incluir esta cabecera para mciSendString
+#pragma comment(lib, "winmm.lib")
 
 
 Partida::Partida()
@@ -15,6 +19,7 @@ Partida::Partida()
     m_joc = Joc();
     m_partidaAcabada = false;
 
+    llistarArxius();
 }
 
 void Partida::inicialitza(int const mode, const string& fitxerInicial, const string& fitxerFigures, const string& fitxerMoviments)
@@ -139,6 +144,63 @@ TipusFigura Partida::generarTipusFiguraAleatoria(/*TipusFigura min, TipusFigura 
 }
 
 
+void Partida::accionsTeclat(bool& baixa, int& filesEliminades)
+{
+    if (Keyboard_GetKeyTrg(KEYBOARD_RIGHT))
+    {
+        m_joc.mouFigura(1);
+    }
+    else if (Keyboard_GetKeyTrg(KEYBOARD_LEFT))
+    {
+        m_joc.mouFigura(-1);
+    }
+    else if (Keyboard_GetKeyTrg(KEYBOARD_UP))
+    {
+        m_joc.giraFigura(GIR_HORARI);
+    }
+    else if (Keyboard_GetKeyTrg(KEYBOARD_DOWN))
+    {
+        m_joc.giraFigura(GIR_ANTI_HORARI);
+    }
+    else if (Keyboard_GetKeyTrg(KEYBOARD_SPACE))
+    {
+        do
+        {
+            baixa = m_joc.baixaFigura(filesEliminades);
+        } while (baixa);
+    }
+    else if (Keyboard_GetKeyTrg(KEYBOARD_RETURN))
+    {
+        pararMusica();
+        reproduirSeguentCanco();
+    }
+    else if (Keyboard_GetKeyTrg(KEYBOARD_ESCAPE))
+    {
+        pararMusica();
+    }
+}
+
+
+void Partida::mostraTextTauler()
+{
+    if (!m_partidaAcabada)
+    {
+        string puntuacio = "Puntuacio: " + to_string(m_puntuacio);
+        GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER + 260, POS_Y_TAULER - 60, 1.0, puntuacio);
+
+        string nivell = "Nivell: " + to_string(m_nivell);
+        GraphicManager::getInstance()->drawFont(FONT_GREEN_30, POS_X_TAULER + 260, POS_Y_TAULER - 90, 1.0, nivell);
+    }
+    else
+    {
+        string msg = "Puntuacio Final: " + to_string(m_puntuacio) + ", Nivell: " + to_string(m_nivell);
+        GraphicManager::getInstance()->drawFont(FONT_GREEN_30, POS_X_TAULER, POS_Y_TAULER - 50, 1.0, msg);
+
+        string fi = "___ GAME OVER ___";
+        GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER - 50, POS_Y_TAULER, 1.5, fi);
+    }
+}
+
 void Partida::actualitza(int const mode, double deltaTime)
 {
     int filesEliminades = 0;
@@ -150,29 +212,7 @@ void Partida::actualitza(int const mode, double deltaTime)
     //ACCIONS DE TECLAT
     if (mode == 0) // mode normal = 0, pots moure tu
     {
-        if (Keyboard_GetKeyTrg(KEYBOARD_RIGHT))
-        {
-            m_joc.mouFigura(1);
-        }
-        else if (Keyboard_GetKeyTrg(KEYBOARD_LEFT))
-        {
-            m_joc.mouFigura(-1);
-        }
-        else if (Keyboard_GetKeyTrg(KEYBOARD_UP))
-        {
-            m_joc.giraFigura(GIR_HORARI);
-        }
-        else if (Keyboard_GetKeyTrg(KEYBOARD_DOWN))
-        {
-            m_joc.giraFigura(GIR_ANTI_HORARI);
-        }
-        else if (Keyboard_GetKeyTrg(KEYBOARD_SPACE))
-        {
-            do
-            {
-                baixa = m_joc.baixaFigura(filesEliminades);
-            } while (baixa);
-        }
+        accionsTeclat(baixa, filesEliminades);
     }
     else if (itMov != m_movimentTest.end())
     {
@@ -215,26 +255,7 @@ void Partida::actualitza(int const mode, double deltaTime)
 
 
     //MOSTRAR TEXT
-    if (!m_partidaAcabada)
-    {
-
-
-        string puntuacio = "Puntuacio: " + to_string(m_puntuacio);
-        GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER + 260, POS_Y_TAULER - 60, 1.0, puntuacio);
-
-        string nivell = "Nivell: " + to_string(m_nivell);
-        GraphicManager::getInstance()->drawFont(FONT_GREEN_30, POS_X_TAULER + 260, POS_Y_TAULER - 90, 1.0, nivell);
-
-    }
-    else
-    {
-        string msg = "Puntuacio Final: " + to_string(m_puntuacio) + ", Nivell: " + to_string(m_nivell);
-        GraphicManager::getInstance()->drawFont(FONT_GREEN_30, POS_X_TAULER, POS_Y_TAULER - 50, 1.0, msg);
-
-        string fi = "___ GAME OVER ___";
-        GraphicManager::getInstance()->drawFont(FONT_WHITE_30, POS_X_TAULER - 50, POS_Y_TAULER , 1.5, fi);
-
-    }
+    mostraTextTauler();
 
     if (!baixa) //la figura s'ha posat al tauler
     {
@@ -242,9 +263,14 @@ void Partida::actualitza(int const mode, double deltaTime)
 
         if (m_joc.getFilaFigura() == 0) // revisar, provisional
         {
-            //s'ha acabat la partida
-            m_partidaAcabada = true; //provisional
+            if (!m_partidaAcabada)
+            {
+                pararMusica();
+                reprodueixMusica("data\\Audio SoundEffects\\game-over-arcade-6435.mp3");
+            }
 
+            //s'ha acabat la partida
+            m_partidaAcabada = true;
         }
         else if (mode == 0)//generem la seguent figura aleatoria al mode normal
         {
@@ -252,8 +278,6 @@ void Partida::actualitza(int const mode, double deltaTime)
         }
         else // estem en mode test
         {
-
-
             if (itFigura != m_figuraTest.end())
             {
                 Figura figuraTest = *itFigura; //per accedir a la figura a la posicio on estigui l'iterador
@@ -262,9 +286,15 @@ void Partida::actualitza(int const mode, double deltaTime)
             }
             else if (itFigura == m_figuraTest.end()) //si han sortit totes les figures
             {
+                pararMusica();
+
+                if (!m_partidaAcabada)
+                {
+                    reprodueixMusica("data\\Audio SoundEffects\\game-over-arcade-6435.mp3");
+                }
+
                 m_partidaAcabada = true;
             }
-
         }
     }
 }
@@ -338,4 +368,97 @@ void Partida::mostraPuntuacio(const string& nomFitxer)
         cout << "------------------------------------------------------------" << endl;
     }
     fitxer.close();
+}
+
+
+void Partida::pararMusica()
+{
+    mciSendString("stop musica", NULL, 0, NULL);
+    mciSendString("close musica", NULL, 0, NULL);
+}
+
+void Partida::reprodueixMusica(const string& musica)
+{
+    string comanda = "open \"" + musica + "\" type mpegvideo alias musica";
+
+    if (mciSendString(comanda.c_str(), NULL, 0, NULL) != 0)
+    {
+        std::cerr << "Error al carregar l'arxiuo de musica: " << musica << std::endl;
+    }
+    else
+    {
+        string modeReproduccio = "play musica";
+
+        if (musica.find("SoundEffects") == string::npos)
+        {
+            modeReproduccio += " repeat";
+        }
+
+        mciSendString(modeReproduccio.c_str(), NULL, 0, NULL);
+    }
+}
+
+
+string Partida::escollirMusica()
+{
+    int opcio;
+
+    //mostra arxius musica
+    cout << "FUNCIONAMENT: Pulsa ENTER duran la partida per passar a la seguent canco: " << endl << endl;
+
+    cout << endl << "Musica disponible: " << endl;
+    for (int i = 0; i < m_numArxius; i++)
+    {
+        cout << i + 1 << ". " << m_arxiusMusica[i] << endl;
+    }
+
+    cin >> opcio;
+
+    m_indexMusicaActual = --opcio;
+    //cout << endl << endl << m_arxiusMusica[opcio];
+
+    return "data\\Audio\\" + m_arxiusMusica[m_indexMusicaActual];
+}
+
+
+void Partida::llistarArxius()
+{
+    //string carpeta = "C:\\Users\\alici\\source\\repos\\projecte MP\\intro_llibreria_grafica\\intro_llibreria_grafica_estudiants\\1. Resources\\data\\Audio";
+    string carpeta = "..\\1. Resources\\data\\Audio";
+
+    string rutaBusqueda = carpeta + "\\*";
+    WIN32_FIND_DATAA arxiuTrobat;
+    HANDLE handle = FindFirstFileA(rutaBusqueda.c_str(), &arxiuTrobat);
+
+    if (handle == INVALID_HANDLE_VALUE)
+    {
+        std::cerr << "Error al obrir la carpeta: " << carpeta << std::endl;
+        return;
+    }
+
+    m_numArxius = 0;
+    do
+    {
+        const std::string arxiu = arxiuTrobat.cFileName;
+        if (arxiu != "." && arxiu != ".." && m_numArxius < MAX_ARXIUS)
+        {
+            m_arxiusMusica[m_numArxius] = arxiu;
+
+            if (arxiu == "Tetris.mp3")
+            {
+                m_indexMusicaActual = m_numArxius;
+            }
+            ++m_numArxius;
+        }
+
+    } while (FindNextFileA(handle, &arxiuTrobat) != 0);
+
+    FindClose(handle);
+}
+
+void Partida::reproduirSeguentCanco()
+{
+    m_indexMusicaActual = (m_indexMusicaActual + 1) % m_numArxius; // Pasar a la canco de la llista
+
+    reprodueixMusica("data\\Audio\\" + m_arxiusMusica[m_indexMusicaActual]);
 }

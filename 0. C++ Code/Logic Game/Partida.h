@@ -12,6 +12,9 @@
 #include <iostream>
 #include <list>
 
+#include <Windows.h>
+#include <mmsystem.h>
+
 using namespace std;
 
 typedef struct
@@ -38,8 +41,19 @@ public:
     void escriuPuntuacio(const string& nomFitxer);
     void mostraPuntuacio(const string& nomFitxer);
 
+    void accionsTeclat(bool& baixa, int& filesEliminades);
+    void mostraTextTauler();
+
     int const getPuntuacio() { return m_puntuacio; }
     string getNomJugador() { return m_nomJugador; }
+
+    //MUSICA
+    void pararMusica();
+    //void seguentCanco();
+    void reprodueixMusica(const string& musica);
+    string escollirMusica();
+    void llistarArxius();
+    void reproduirSeguentCanco();
 
 private:
     double m_temps;
@@ -62,6 +76,14 @@ private:
 
     list<TipusMoviment> m_movimentTest; //creem la lista per guardar els moviments pel test
     list<TipusMoviment>::iterator itMov; //iterador, per pasar les seguents figures
+
+
+    //MUSICA
+    static const int MAX_ARXIUS = 100;
+    string m_arxiusMusica[MAX_ARXIUS];
+    int m_numArxius;
+    int m_indexMusicaActual;
+
 };
 
 #endif 

@@ -4,6 +4,10 @@
 
 #include "Partida.h"
 
+#include <string>
+#include <Windows.h>
+#include <mmsystem.h>
+
 using namespace std;
 
 class Tetris
@@ -20,7 +24,7 @@ public:
 	bool finalPartida(string const fitxerPuntuacions);
 	void imprimirMenu();
 
-	//void menuInicial();
+	void missatgeFinal();
 
 private:
 	Partida m_partida;
