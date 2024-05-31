@@ -32,6 +32,38 @@ int Tauler::eliminarFila(int const fila, int const columna)
 {
 	int i = fila, filesCompletades = 0;
 
+	if (m_tauler[fila][columna] == COLOR_ROSA) // bomba que elimina un quadrat 9x9
+	{
+		m_tauler[fila][columna] = COLOR_NEGRE;   //Cal comprovar totes les posibilitats
+		if (fila >= 0 && fila < MAX_FILA && columna >= 0 && columna < MAX_COL) {
+			m_tauler[fila][columna] = COLOR_NEGRE;
+		}
+		if (fila - 1 >= 0) {
+			m_tauler[fila - 1][columna] = COLOR_NEGRE;
+		}
+		if (fila + 1 < MAX_FILA) {
+			m_tauler[fila + 1][columna] = COLOR_NEGRE;
+		}
+		if (fila - 1 >= 0 && columna - 1 >= 0) {
+			m_tauler[fila - 1][columna - 1] = COLOR_NEGRE;
+		}
+		if (fila - 1 >= 0 && columna + 1 < MAX_COL) {
+			m_tauler[fila - 1][columna + 1] = COLOR_NEGRE;
+		}
+		if (columna - 1 >= 0) {
+			m_tauler[fila][columna - 1] = COLOR_NEGRE;
+		}
+		if (columna + 1 < MAX_COL) {
+			m_tauler[fila][columna + 1] = COLOR_NEGRE;
+		}
+		if (fila + 1 < MAX_FILA && columna - 1 >= 0) {
+			m_tauler[fila + 1][columna - 1] = COLOR_NEGRE;
+		}
+		if (fila + 1 < MAX_FILA && columna + 1 < MAX_COL) {
+			m_tauler[fila + 1][columna + 1] = COLOR_NEGRE;
+		}
+
+	}
 	while ((i < fila + MAX_ALCADA) && (i < MAX_FILA))
 	{
 		int j = 0;
@@ -137,6 +169,7 @@ void Tauler::dibuixaTauler()
 				case COLOR_BLAUFOSC: bloc = GRAFIC_QUADRAT_BLAUFOSC; break;
 				case COLOR_VERMELL: bloc = GRAFIC_QUADRAT_VERMELL; break;
 				case COLOR_VERD: bloc = GRAFIC_QUADRAT_VERD; break;
+				case COLOR_ROSA: bloc = GRAFIC_QUADRAT_ROSA; break;
 				case COLOR_BLANC: bloc = GRAFIC_QUADRAT_BLANC; break;
 				}
 

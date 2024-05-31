@@ -12,8 +12,8 @@ class Joc
 {
 public:
 	Joc();
-	void inicialitzaTaulerTest(const string& fitxerInicial);
-	list<Figura> inicialitzaFiguresTest(const string& fitxerFigures, list<Figura> m_figuraTest);
+	list <Figura> inicialitzaTaulerTest(const string& fitxerInicial, list<Figura> m_figuraTest);
+	void inicialitzaFiguresTest(const string& fitxerFigures, list<Figura>& m_figuraTest);
 	list<TipusMoviment> inicialitzaMovimentsTest(const string& fitxerMoviments, list<TipusMoviment> m_movimentsTest);
 
 	void escriuTauler(const string& nomFitxer);

@@ -26,14 +26,19 @@ void Partida::inicialitza(int const mode, const string& fitxerInicial, const str
 {
     if (mode == 1) //mode test
     {
+
+        //INICIALITZA EL TAULER A BUIT
+        m_joc = Joc();
+
         //ACTUALITZA EL TAULER AL SEU ESTAT INICIAL
 
-        m_joc.inicialitzaTaulerTest(fitxerInicial);
+        m_figuraTest = m_joc.inicialitzaTaulerTest(fitxerInicial, m_figuraTest);
+        itFigura = m_figuraTest.begin();
 
         //GUARDA LES FIGURES QUE APAREIXERAN
-
-        m_figuraTest = m_joc.inicialitzaFiguresTest(fitxerFigures, m_figuraTest);
-        itFigura = m_figuraTest.begin();
+        
+        m_joc.inicialitzaFiguresTest(fitxerFigures, m_figuraTest);
+        
 
         if (itFigura != m_figuraTest.end() and !m_figuraTest.empty())
         {
@@ -203,6 +208,15 @@ void Partida::mostraTextTauler()
 
 void Partida::actualitza(int const mode, double deltaTime)
 {
+    if (mode == 1)
+    {
+        if (itMov == m_movimentTest.end())
+        {
+            m_figuraTest.clear();
+            m_movimentTest.clear();
+            m_partidaAcabada = true;
+        }
+    }
     int filesEliminades = 0;
     bool baixa = true;
 
@@ -238,7 +252,7 @@ void Partida::actualitza(int const mode, double deltaTime)
     m_joc.dibuixa();
 
 
-    if (baixa)
+    if (baixa && mode == 0) // si es mode test NO baixa automaticament
     {
         //BAIXAR FIGURA
         m_temps = m_temps + deltaTime * m_incrementVelocitat;

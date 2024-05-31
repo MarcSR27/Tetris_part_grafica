@@ -13,33 +13,42 @@ Joc::Joc()
 	//m_nivell = 0;
 }
 
-void Joc::inicialitzaTaulerTest(const string& fitxerInicial) //REVISAR, SENSE ACABAR (NOMES PROVISIONAL)
-{	//No acabada
+list<Figura> Joc::inicialitzaTaulerTest(const string& fitxerInicial, list<Figura> m_figuraTest) {	//No acabada
 
-	ifstream fitxer;
-	fitxer.open(fitxerInicial);
+	ifstream arxiu;
+	arxiu.open(fitxerInicial);
 
-	if (fitxer.is_open())
+	if (arxiu.is_open())
 	{
+		//llegir la primera fila, les dades de la figura
 		int fila, columna, estat, tipus;
-		fitxer >> tipus >> fila >> columna >> estat;
+		arxiu >> tipus >> fila >> columna >> estat;
 
+		Figura fig(static_cast<TipusFigura>(tipus), estat);
+		fig.setPosicioX(--columna);
+		fig.setPosicioY(--fila);
+		m_figuraTest.push_back(fig);
 
-
+		//llegir les dades del tauler
 		for (int i = 0; i < MAX_FILA; i++)
 		{
 			for (int j = 0; j < MAX_COL; j++)
 			{
 				int valor;
-				fitxer >> valor;
+				arxiu >> valor;
 				m_taulerJoc.setCasella(i, j, valor);
 			}
 		}
-		fitxer.close();
+
+		//escriure figura al tauler
+		escriuFiguraAlTauler();
+
+		arxiu.close();
 	}
+	return m_figuraTest;
 
 }
-list<Figura> Joc::inicialitzaFiguresTest(const string& fitxerFigures, list<Figura> m_figuraTest)
+void Joc::inicialitzaFiguresTest(const string& fitxerFigures, list<Figura>& m_figuraTest)
 {
 	ifstream fitxerFig;
 	fitxerFig.open(fitxerFigures);
@@ -56,7 +65,7 @@ list<Figura> Joc::inicialitzaFiguresTest(const string& fitxerFigures, list<Figur
 			m_figuraTest.push_back(fig);
 		}
 	}
-	return m_figuraTest;
+
 }
 list<TipusMoviment> Joc::inicialitzaMovimentsTest(const string& fitxerMoviments, list<TipusMoviment> m_movimentsTest)
 {

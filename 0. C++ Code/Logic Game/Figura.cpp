@@ -117,6 +117,10 @@ Figura::Figura(TipusFigura tipus, int estat)
 
         m_color = COLOR_BLANC;
         break;
+    case FIGURA_BOMBA:
+        m_formaFiguraActual[0][0] = COLOR_ROSA;
+        m_color = COLOR_ROSA;
+        break;
     default:
         break;
     }
@@ -161,7 +165,7 @@ void Figura::girarFigura(DireccioGir sentit)
 {
     int nFilesFigura, nColumnesFigura;
 
-    if (m_tipus != FIGURA_O) //LA FIGURA_O (EL QUADRAT) QUAN GIRA ES QUEDA IGUAL
+    if (m_tipus != FIGURA_O && m_tipus != FIGURA_BOMBA) //LA FIGURA_O (EL QUADRAT) QUAN GIRA ES QUEDA IGUAL
     {
         //ASSIGNA EL NOMBRE DE FILES I COLUMNES DE LA MATRIU QUE OCUPA LA FIGURA AL GIRAR
         if (m_tipus == FIGURA_I)
@@ -238,6 +242,7 @@ void Figura::dibuixaFigura()
     case COLOR_BLAUFOSC: bloc = GRAFIC_QUADRAT_BLAUFOSC; break;
     case COLOR_VERMELL: bloc = GRAFIC_QUADRAT_VERMELL; break;
     case COLOR_VERD: bloc = GRAFIC_QUADRAT_VERD; break;
+    case COLOR_ROSA: bloc = GRAFIC_QUADRAT_ROSA; break;
     case COLOR_BLANC: bloc = GRAFIC_QUADRAT_BLANC; break;
 
     }
