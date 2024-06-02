@@ -6,15 +6,17 @@
 #include "Figura.h"
 #include <string>
 #include <list>
+#include <queue>
+#include "cua.h"
 using namespace std;
 
 class Joc
 {
 public:
 	Joc();
-	list <Figura> inicialitzaTaulerTest(const string& fitxerInicial, list<Figura> m_figuraTest);
-	void inicialitzaFiguresTest(const string& fitxerFigures, list<Figura>& m_figuraTest);
-	list<TipusMoviment> inicialitzaMovimentsTest(const string& fitxerMoviments, list<TipusMoviment> m_movimentsTest);
+	void inicialitzaTaulerTest(const string& fitxerInicial, CuaFigura& m_figuraTest);
+	void inicialitzaFiguresTest(const string& fitxerFigures, CuaFigura& m_figuraTest);
+	void inicialitzaMovimentsTest(const string& fitxerMoviments, CuaMov& m_movimentsTest);
 
 	void escriuTauler(const string& nomFitxer);
 

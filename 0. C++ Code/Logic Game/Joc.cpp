@@ -13,7 +13,7 @@ Joc::Joc()
 	//m_nivell = 0;
 }
 
-list<Figura> Joc::inicialitzaTaulerTest(const string& fitxerInicial, list<Figura> m_figuraTest) {	//No acabada
+void Joc::inicialitzaTaulerTest(const string& fitxerInicial, CuaFigura& m_figuraTest) {	//No acabada
 
 	ifstream arxiu;
 	arxiu.open(fitxerInicial);
@@ -27,8 +27,8 @@ list<Figura> Joc::inicialitzaTaulerTest(const string& fitxerInicial, list<Figura
 		Figura fig(static_cast<TipusFigura>(tipus), estat);
 		fig.setPosicioX(--columna);
 		fig.setPosicioY(--fila);
-		m_figuraTest.push_back(fig);
-
+		m_figuraTest.afegeix(fig);
+		
 		//llegir les dades del tauler
 		for (int i = 0; i < MAX_FILA; i++)
 		{
@@ -45,10 +45,9 @@ list<Figura> Joc::inicialitzaTaulerTest(const string& fitxerInicial, list<Figura
 
 		arxiu.close();
 	}
-	return m_figuraTest;
 
 }
-void Joc::inicialitzaFiguresTest(const string& fitxerFigures, list<Figura>& m_figuraTest)
+void Joc::inicialitzaFiguresTest(const string& fitxerFigures, CuaFigura& m_figuraTest)
 {
 	ifstream fitxerFig;
 	fitxerFig.open(fitxerFigures);
@@ -62,12 +61,12 @@ void Joc::inicialitzaFiguresTest(const string& fitxerFigures, list<Figura>& m_fi
 			Figura fig(static_cast<TipusFigura>(tipus), estat);
 			fig.setPosicioX(--columna);
 			fig.setPosicioY(--fila);
-			m_figuraTest.push_back(fig);
+			m_figuraTest.afegeix(fig);
 		}
 	}
 
 }
-list<TipusMoviment> Joc::inicialitzaMovimentsTest(const string& fitxerMoviments, list<TipusMoviment> m_movimentsTest)
+void Joc::inicialitzaMovimentsTest(const string& fitxerMoviments, CuaMov& m_movimentsTest)
 {
 	ifstream fitxerMov;
 	fitxerMov.open(fitxerMoviments);
@@ -78,10 +77,9 @@ list<TipusMoviment> Joc::inicialitzaMovimentsTest(const string& fitxerMoviments,
 
 		while (fitxerMov >> mov)
 		{
-			m_movimentsTest.push_back(static_cast<TipusMoviment>(mov));
+			m_movimentsTest.afegeix(static_cast<TipusMoviment>(mov));
 		}
 	}
-	return m_movimentsTest;
 }
 bool Joc::setFigura(int const columna, TipusFigura const tipus, int const estat, int const fila)
 {

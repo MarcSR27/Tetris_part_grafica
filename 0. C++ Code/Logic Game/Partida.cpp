@@ -29,28 +29,18 @@ void Partida::inicialitza(int const mode, const string& fitxerInicial, const str
 
         //INICIALITZA EL TAULER A BUIT
         m_joc = Joc();
+        m_joc.inicialitzaTaulerTest(fitxerInicial, m_figuraTest);
 
-        //ACTUALITZA EL TAULER AL SEU ESTAT INICIAL
-
-        m_figuraTest = m_joc.inicialitzaTaulerTest(fitxerInicial, m_figuraTest);
-        itFigura = m_figuraTest.begin();
-
-        //GUARDA LES FIGURES QUE APAREIXERAN
-        
         m_joc.inicialitzaFiguresTest(fitxerFigures, m_figuraTest);
-        
 
-        if (itFigura != m_figuraTest.end() and !m_figuraTest.empty())
+        if (!m_figuraTest.buit())
         {
-            Figura figuraTest = *itFigura; //per accedir a la figura a la posicio on estigui l'iterador
+            Figura figuraTest = m_figuraTest.getPrimerFig(); //accedemos a la figura en la posición frontal de la cola
             m_joc.setFigura(figuraTest.getPosicioX(), figuraTest.getTipus(), figuraTest.getEstat(), figuraTest.getPosicioY());
-            itFigura++;
+            m_figuraTest.elimina(); //eliminem el primer node
         }
-
-        //GUARDA ELS MOVIMENTS QUE ES FARAN
-
-        m_movimentTest = m_joc.inicialitzaMovimentsTest(fitxerMoviments, m_movimentTest);
-        itMov = m_movimentTest.begin();
+        
+        m_joc.inicialitzaMovimentsTest(fitxerMoviments, m_movimentTest);
 
     }
     else //mode normal
@@ -68,7 +58,7 @@ void Partida::inicialitza(int const mode, const string& fitxerInicial, const str
             columna = generarNumAleatori(0, MAX_COL - 1);
             estat = generarNumAleatori(0, 3);
 
-        } while (!m_joc.setFigura(columna, tipusFigura, estat, 0)); // fila = 0
+        } while (!m_joc.setFigura(columna, tipusFigura, estat, 0) and tipusFigura != FIGURA_BOMBA); // fila = 0, evita que la primera figura sigui la Bomba
 
         m_joc.setFigura(columna, tipusFigura, estat, 0);
     }
@@ -208,14 +198,17 @@ void Partida::mostraTextTauler()
 
 void Partida::actualitza(int const mode, double deltaTime)
 {
-    if (mode == 1)
+    if (mode == 1 and (m_figuraTest.buit() or m_movimentTest.buit()))
     {
-        if (itMov == m_movimentTest.end())
+        while (!m_figuraTest.buit())
         {
-            m_figuraTest.clear();
-            m_movimentTest.clear();
-            m_partidaAcabada = true;
+            m_figuraTest.elimina();
         }
+        while (!m_movimentTest.buit())
+        {
+            m_movimentTest.elimina();
+        }
+        m_partidaAcabada = true;
     }
     int filesEliminades = 0;
     bool baixa = true;
@@ -228,9 +221,9 @@ void Partida::actualitza(int const mode, double deltaTime)
     {
         accionsTeclat(baixa, filesEliminades);
     }
-    else if (itMov != m_movimentTest.end())
+    else if (!m_movimentTest.buit())
     {
-        switch (*itMov)
+        switch (m_movimentTest.getPrimerMov())
         {
         case 0: m_joc.mouFigura(-1); break;
         case 1: m_joc.mouFigura(1); break;
@@ -244,7 +237,8 @@ void Partida::actualitza(int const mode, double deltaTime)
         break;
         default: baixa = m_joc.baixaFigura(filesEliminades); break; //posem per defecte que baixi
         }
-        itMov++; //per pasar al seguent moviment
+
+        m_movimentTest.elimina();
     }
 
 
@@ -292,13 +286,13 @@ void Partida::actualitza(int const mode, double deltaTime)
         }
         else // estem en mode test
         {
-            if (itFigura != m_figuraTest.end())
+            if (!m_figuraTest.buit())
             {
-                Figura figuraTest = *itFigura; //per accedir a la figura a la posicio on estigui l'iterador
+                Figura figuraTest = m_figuraTest.getPrimerFig(); //accedemos a la figura en la posición frontal de la cola
                 m_joc.setFigura(figuraTest.getPosicioX(), figuraTest.getTipus(), figuraTest.getEstat(), figuraTest.getPosicioY());
-                itFigura++;
+                m_figuraTest.elimina(); //eliminem el primer node
             }
-            else if (itFigura == m_figuraTest.end()) //si han sortit totes les figures
+            else if (m_figuraTest.buit()) //si han sortit totes les figures
             {
                 pararMusica();
 

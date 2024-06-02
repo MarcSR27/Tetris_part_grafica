@@ -54,6 +54,7 @@ bool Tetris::menuInicial(string const fitxerPuntuacions)
             if (resposta == 's')
             {
                 system("cls");
+                cout << flush;
                 opcio = -1;
             }
             else
@@ -70,6 +71,8 @@ bool Tetris::menuInicial(string const fitxerPuntuacions)
             cin >> resposta2;
             if (resposta2 == 's')
             {
+                system("cls");
+                cout << flush;
                 opcio = -1;
             }
             else

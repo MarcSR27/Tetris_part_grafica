@@ -12,6 +12,8 @@
 #include <iostream>
 #include <list>
 
+#include "cua.h"
+
 #include <Windows.h>
 #include <mmsystem.h>
 
@@ -70,13 +72,9 @@ private:
     //int m_mode;
     
     string m_nomJugador; // provisional, ya es veura si es necesaria
-    
-    list<Figura> m_figuraTest; //creem la lista per guardar les figures pel test
-    list<Figura>::iterator itFigura; //iterador, per pasar les seguents figures
-
-    list<TipusMoviment> m_movimentTest; //creem la lista per guardar els moviments pel test
-    list<TipusMoviment>::iterator itMov; //iterador, per pasar les seguents figures
-
+ 
+    CuaFigura m_figuraTest;
+    CuaMov m_movimentTest;
 
     //MUSICA
     static const int MAX_ARXIUS = 100;

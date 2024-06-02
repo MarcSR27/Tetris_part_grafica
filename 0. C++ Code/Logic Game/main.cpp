@@ -86,12 +86,12 @@ int main(int argc, const char* argv[])
 
         } while (!Keyboard_GetKeyTrg(KEYBOARD_ESCAPE));
         
-
+        pantalla.close();
         if (game.finalPartida(fitxerPuntuacions))
         {
             //game = Tetris();
             system("cls");
-            //cout << flush;
+            cout << flush;
             estaJugant = game.menuInicial(fitxerPuntuacions);
         }
         else
@@ -100,7 +100,7 @@ int main(int argc, const char* argv[])
             
         }
         
-        pantalla.close();
+        
        
         
     } //while (estaJugant);

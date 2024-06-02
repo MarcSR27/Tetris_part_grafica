@@ -25,6 +25,7 @@ Figura::Figura()
     m_posicioX = -1;
     m_posicioY = -1;
     m_tipus = NO_FIGURA;
+    m_estat = -1;
 }
 
 
