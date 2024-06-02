@@ -26,7 +26,6 @@ void Partida::inicialitza(int const mode, const string& fitxerInicial, const str
 {
     if (mode == 1) //mode test
     {
-
         //INICIALITZA EL TAULER A BUIT
         m_joc = Joc();
         m_joc.inicialitzaTaulerTest(fitxerInicial, m_figuraTest);
@@ -98,8 +97,6 @@ void Partida::puntuacioINivell(int const filesEliminades)
         {
             ++m_nivell;
             m_incrementVelocitat = m_incrementVelocitat + m_incrementVelocitat * 0.25;
-            //AUGMENTA LA VELOCITAT
-
         }
     }
 }
@@ -111,11 +108,9 @@ void Partida::figuraAleatoria()
 
     do
     {
-
         tipusFigura = generarTipusFiguraAleatoria();
         columna = generarNumAleatori(0, MAX_COL - 1);
         estat = generarNumAleatori(0, 3);
-
 
     } while (!m_joc.setFigura(columna, tipusFigura, estat, 0));
 }
@@ -267,45 +262,52 @@ void Partida::actualitza(int const mode, double deltaTime)
 
     if (!baixa) //la figura s'ha posat al tauler
     {
-        puntuacioINivell(filesEliminades);
+        puntuacioINivell(filesEliminades); 
 
-        if (m_joc.getFilaFigura() == 0) // revisar, provisional
+        figuraPosadaAlTauler(mode); 
+    }
+}
+
+
+void Partida::figuraPosadaAlTauler(int mode)
+{
+    if (m_joc.getFilaFigura() == 0)
+    {
+        if (!m_partidaAcabada)
         {
+            pararMusica();
+            reprodueixMusica("data\\Audio SoundEffects\\game-over-arcade-6435.mp3");
+        }
+
+        //s'ha acabat la partida
+        m_partidaAcabada = true;
+    }
+    else if (mode == 0)//generem la seguent figura aleatoria al mode normal
+    {
+        figuraAleatoria();
+    }
+    else // estem en mode test
+    {
+        if (!m_figuraTest.buit())
+        {
+            Figura figuraTest = m_figuraTest.getPrimerFig(); //accedemos a la figura en la posición frontal de la cola
+            m_joc.setFigura(figuraTest.getPosicioX(), figuraTest.getTipus(), figuraTest.getEstat(), figuraTest.getPosicioY());
+            m_figuraTest.elimina(); //eliminem el primer node
+        }
+        else if (m_figuraTest.buit()) //si han sortit totes les figures
+        {
+            pararMusica();
+
             if (!m_partidaAcabada)
             {
-                pararMusica();
                 reprodueixMusica("data\\Audio SoundEffects\\game-over-arcade-6435.mp3");
             }
 
-            //s'ha acabat la partida
             m_partidaAcabada = true;
-        }
-        else if (mode == 0)//generem la seguent figura aleatoria al mode normal
-        {
-            figuraAleatoria();
-        }
-        else // estem en mode test
-        {
-            if (!m_figuraTest.buit())
-            {
-                Figura figuraTest = m_figuraTest.getPrimerFig(); //accedemos a la figura en la posición frontal de la cola
-                m_joc.setFigura(figuraTest.getPosicioX(), figuraTest.getTipus(), figuraTest.getEstat(), figuraTest.getPosicioY());
-                m_figuraTest.elimina(); //eliminem el primer node
-            }
-            else if (m_figuraTest.buit()) //si han sortit totes les figures
-            {
-                pararMusica();
-
-                if (!m_partidaAcabada)
-                {
-                    reprodueixMusica("data\\Audio SoundEffects\\game-over-arcade-6435.mp3");
-                }
-
-                m_partidaAcabada = true;
-            }
         }
     }
 }
+
 
 
 void Partida::escriuPuntuacio(const string& nomFitxer) // Separa en dues funcions, es queda aixi provisional
@@ -324,6 +326,13 @@ void Partida::escriuPuntuacio(const string& nomFitxer) // Separa en dues funcion
         }
     }
     fitxer.close();
+
+    gestionaNovaPuntuacio(nomFitxer, puntuacions);
+}
+
+
+void Partida::gestionaNovaPuntuacio(const string& nomFitxer, list<Jugador> puntuacions)
+{
 
     cout << "Introdueix el teu nom: " << endl;
     cin >> m_nomJugador;
@@ -351,8 +360,6 @@ void Partida::escriuPuntuacio(const string& nomFitxer) // Separa en dues funcion
         }
         fitxerEscritura.close();
     }
-
-
 }
 
 void Partida::mostraPuntuacio(const string& nomFitxer)
@@ -379,6 +386,8 @@ void Partida::mostraPuntuacio(const string& nomFitxer)
 }
 
 
+//MUSICA
+
 void Partida::pararMusica()
 {
     mciSendString("stop musica", NULL, 0, NULL);
@@ -388,10 +397,11 @@ void Partida::pararMusica()
 void Partida::reprodueixMusica(const string& musica)
 {
     string comanda = "open \"" + musica + "\" type mpegvideo alias musica";
+    //std::string comanda = "open \"" + musica + "\" type mpegvideo alias " + alias;
 
     if (mciSendString(comanda.c_str(), NULL, 0, NULL) != 0)
     {
-        std::cerr << "Error al carregar l'arxiuo de musica: " << musica << std::endl;
+        std::cerr << "Error al carregar l'arxiu de musica: " << musica << endl << "Selecciona un arxiu valid." << endl;
     }
     else
     {
@@ -407,23 +417,35 @@ void Partida::reprodueixMusica(const string& musica)
 }
 
 
-string Partida::escollirMusica()
+string Partida::escollirMusica(int& opcio)
 {
-    int opcio;
+    system("cls");
+    cout << flush;
 
-    //mostra arxius musica
-    cout << "FUNCIONAMENT: Pulsa ENTER duran la partida per passar a la seguent canco: " << endl << endl;
+    cout << "MUSICA DISPONIBLE: " << endl;
+    cout << "---------------------------------------------------------------------------------------------" << endl;
 
-    cout << endl << "Musica disponible: " << endl;
     for (int i = 0; i < m_numArxius; i++)
     {
         cout << i + 1 << ". " << m_arxiusMusica[i] << endl;
     }
 
+    cout << endl << "(Pulsa ENTER duran la partida per passar a la seguent canco) " << endl;
+    cout << "---------------------------------------------------------------------------------------------" << endl;
+    cout << endl << "Escriu el numero de la musica desitjada (0 per tornar al menu): " << endl;
+
     cin >> opcio;
 
-    m_indexMusicaActual = --opcio;
-    //cout << endl << endl << m_arxiusMusica[opcio];
+    while ((opcio < 0) || (opcio > m_numArxius))
+    {
+        cout << "Opcio no valida. Introdueix un nombre entre 0 i " << m_numArxius << ". " << endl;
+        cin >> opcio;
+    }
+
+    if (opcio != 0)
+    {
+        m_indexMusicaActual = --opcio;
+    }
 
     return "data\\Audio\\" + m_arxiusMusica[m_indexMusicaActual];
 }
@@ -431,7 +453,6 @@ string Partida::escollirMusica()
 
 void Partida::llistarArxius()
 {
-    //string carpeta = "C:\\Users\\alici\\source\\repos\\projecte MP\\intro_llibreria_grafica\\intro_llibreria_grafica_estudiants\\1. Resources\\data\\Audio";
     string carpeta = "..\\1. Resources\\data\\Audio";
 
     string rutaBusqueda = carpeta + "\\*";
@@ -466,7 +487,7 @@ void Partida::llistarArxius()
 
 void Partida::reproduirSeguentCanco()
 {
-    m_indexMusicaActual = (m_indexMusicaActual + 1) % m_numArxius; // Pasar a la canco de la llista
+    m_indexMusicaActual = (m_indexMusicaActual + 1) % m_numArxius; // Pasar a la seguent canco de la llista
 
     reprodueixMusica("data\\Audio\\" + m_arxiusMusica[m_indexMusicaActual]);
 }

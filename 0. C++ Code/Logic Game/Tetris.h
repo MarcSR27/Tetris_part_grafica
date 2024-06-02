@@ -15,8 +15,7 @@ class Tetris
 public:
 	Tetris();
 
-	void juga(double const deltaTime); //PROVISIONAL
-	//void mostraPuntuacions(); //PROVISIONAL
+	void juga(double const deltaTime);
 	void inicialitza(string const fitxerInicial, string const fitxerFigures, string const fitxerMov);
 
 	bool menuInicial(string const fitxerPuntuacions);
@@ -26,11 +25,12 @@ public:
 
 	void missatgeFinal();
 
+	char controlResposta();
+	bool menuMusica(int& opcio, string& musica);
+
 private:
 	Partida m_partida;
 	int m_mode;
 };
-
-//void menuInicial(int& mode); //PROVISIONAL
 
 #endif;

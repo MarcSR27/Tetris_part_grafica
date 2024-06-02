@@ -42,18 +42,20 @@ public:
 
     void escriuPuntuacio(const string& nomFitxer);
     void mostraPuntuacio(const string& nomFitxer);
+    void gestionaNovaPuntuacio(const string& nomFitxer, list<Jugador> puntuacions);
 
     void accionsTeclat(bool& baixa, int& filesEliminades);
     void mostraTextTauler();
+    void figuraPosadaAlTauler(int mode);
 
     int const getPuntuacio() { return m_puntuacio; }
     string getNomJugador() { return m_nomJugador; }
 
     //MUSICA
     void pararMusica();
-    //void seguentCanco();
+    string getCanco() const { return m_arxiusMusica[m_indexMusicaActual]; }
     void reprodueixMusica(const string& musica);
-    string escollirMusica();
+    string escollirMusica(int& opcio);
     void llistarArxius();
     void reproduirSeguentCanco();
 
@@ -64,14 +66,11 @@ private:
     Joc m_joc;
     
     int m_nivell;
-    float m_incrementVelocitat; // per fer que augmenti la velocitat de caiguda de figuras
+    float m_incrementVelocitat; 
     int m_puntuacio;
-    bool m_partidaAcabada; //provisional
+    bool m_partidaAcabada; 
     
-    //falta atribut per guardar les figures que cauran
-    //int m_mode;
-    
-    string m_nomJugador; // provisional, ya es veura si es necesaria
+    string m_nomJugador; 
  
     CuaFigura m_figuraTest;
     CuaMov m_movimentTest;

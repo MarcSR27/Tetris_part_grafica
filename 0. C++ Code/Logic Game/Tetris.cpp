@@ -24,7 +24,7 @@ bool Tetris::menuInicial(string const fitxerPuntuacions)
     
     int opcio;
     bool estaJugant = true;
-    string musica = "data\\Audio\\Tetris.mp3";
+    string musica = "data\\Audio\\" + m_partida.getCanco();
 
     do
     {
@@ -35,21 +35,22 @@ bool Tetris::menuInicial(string const fitxerPuntuacions)
         switch (opcio)
         {
         case 1: //Modo jugar partida
+
             m_mode = 0; 
             break;
 
-
         case 2: //Modo partida tes
+
             m_mode = 1; 
             break;
-
 
         case 3:  //Mostrar puntuaciones 
             
             m_partida.mostraPuntuacio(fitxerPuntuacions);
             cout << "Vols tornar al menu? (s/n)" << endl;
+
             char resposta;
-            cin >> resposta;
+            resposta = controlResposta();
 
             if (resposta == 's')
             {
@@ -60,28 +61,18 @@ bool Tetris::menuInicial(string const fitxerPuntuacions)
             else
             {
                 estaJugant = false;
+                missatgeFinal();
             }
             break;
 
         case 4: //Menu de musica
             
-            musica = m_partida.escollirMusica();
-            cout << "Vols tornar al menu? (s/n)" << endl;
-            char resposta2;
-            cin >> resposta2;
-            if (resposta2 == 's')
-            {
-                system("cls");
-                cout << flush;
-                opcio = -1;
-            }
-            else
-            {
-                estaJugant = false;
-            }
+            estaJugant = menuMusica(opcio, musica);
             break;
 
-        case 5: missatgeFinal();
+        case 5: 
+            
+            missatgeFinal();
             estaJugant = false; 
             break;
 
@@ -92,7 +83,7 @@ bool Tetris::menuInicial(string const fitxerPuntuacions)
 
     } while ((opcio != 1) and (opcio != 2) and (opcio != 3) and (opcio != 4) and (opcio != 5));
 
-    if ((estaJugant) && (musica != ""))
+    if (estaJugant)
     {
         m_partida.pararMusica();
 
@@ -101,6 +92,40 @@ bool Tetris::menuInicial(string const fitxerPuntuacions)
 
     return estaJugant;
 }
+
+
+bool Tetris::menuMusica(int& opcio, string& musica)
+{
+    bool estaJugant = true;
+    int opcio2;
+
+    musica = m_partida.escollirMusica(opcio2);
+
+    if (opcio2 != 0)
+    {
+        cout << "Vols tornar al menu? (s/n)" << endl;
+
+        char resposta2;
+        resposta2 = controlResposta();
+
+        if (resposta2 == 's')
+        {
+            opcio = -1;
+        }
+        else
+        {
+            estaJugant = false;
+            missatgeFinal();
+        }
+    }
+    else
+    {
+        opcio = -1;
+    }
+
+    return estaJugant;
+}
+
 
 void Tetris::juga(double const deltaTime)
 {
@@ -111,24 +136,29 @@ void Tetris::juga(double const deltaTime)
 bool Tetris::finalPartida(string const fitxerPuntuacions)
 {
     char resposta;
-    
-    //if (m_mode != 1)
+
+    cout << "Vols guardar la teva puntuacio? (s/n)" << endl;
+
+    resposta = controlResposta();
+
+    if (resposta == 's')
     {
-        cout << "Vols guardar la teva puntuacio? (s/n)" << endl;
-        cin >> resposta;
-        if (resposta == 's')
-        {
-            m_partida.escriuPuntuacio(fitxerPuntuacions);
-        }
+        m_partida.escriuPuntuacio(fitxerPuntuacions);
     }
 
     //gestiona si jugar una altra partida
     bool final = false;
     cout << endl << "Vols tornal al menu principal?(s/n)" << endl;
-    cin >> resposta;
+
+    resposta = controlResposta();
+
     if (resposta == 's')
     {
         final = true;
+    }
+    else
+    {
+        missatgeFinal();
     }
 
     return final;
@@ -136,6 +166,9 @@ bool Tetris::finalPartida(string const fitxerPuntuacions)
 
 void Tetris::imprimirMenu()
 {
+    system("cls");
+    cout << flush;
+
     cout << "___ TETRIS ___" << endl;
     cout << "---------------------------------------------------------------------------------------------" << endl;
     cout << "Selecciona una opcio:" << endl << endl;
@@ -150,6 +183,9 @@ void Tetris::imprimirMenu()
 
 void Tetris::missatgeFinal()
 {
+    system("cls");
+    cout << flush;
+
     m_partida.pararMusica();
     m_partida.reprodueixMusica("data\\Audio SoundEffects\\dad-says-bye-bye-113119.mp3");
 
@@ -163,4 +199,19 @@ void Tetris::missatgeFinal()
 
     cout << endl << endl << "FINS AVIAT!!! :)";
     Sleep(1000);
+}
+
+char Tetris::controlResposta()
+{
+    char resposta;
+
+    cin >> resposta;
+
+    while ((resposta != 's') && (resposta != 'n'))
+    {
+        cout << "Resposta no valida. Escriu s (si) o n (no): " << endl;
+        cin >> resposta;
+    }
+
+    return resposta;
 }
