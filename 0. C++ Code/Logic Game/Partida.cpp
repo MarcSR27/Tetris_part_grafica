@@ -203,6 +203,12 @@ void Partida::actualitza(int const mode, double deltaTime)
         {
             m_movimentTest.elimina();
         }
+
+        if (!m_partidaAcabada)
+        {
+            pararMusica();
+            reprodueixMusica("data\\Audio SoundEffects\\game-over-arcade-6435.mp3");
+        }
         m_partidaAcabada = true;
     }
     int filesEliminades = 0;
@@ -218,22 +224,7 @@ void Partida::actualitza(int const mode, double deltaTime)
     }
     else if (!m_movimentTest.buit())
     {
-        switch (m_movimentTest.getPrimerMov())
-        {
-        case 0: m_joc.mouFigura(-1); break;
-        case 1: m_joc.mouFigura(1); break;
-        case 2: m_joc.giraFigura(GIR_HORARI); break;
-        case 3: m_joc.giraFigura(GIR_ANTI_HORARI); break;
-        case 4: baixa = m_joc.baixaFigura(filesEliminades); break;
-        case 5: do
-        {
-            baixa = m_joc.baixaFigura(filesEliminades);
-        } while (baixa);
-        break;
-        default: baixa = m_joc.baixaFigura(filesEliminades); break; //posem per defecte que baixi
-        }
-
-        m_movimentTest.elimina();
+        accionsTeclatTest(baixa, filesEliminades); 
     }
 
 
@@ -244,16 +235,16 @@ void Partida::actualitza(int const mode, double deltaTime)
     if (baixa && mode == 0) // si es mode test NO baixa automaticament
     {
         //BAIXAR FIGURA
-        m_temps = m_temps + deltaTime * m_incrementVelocitat;
+        m_temps = m_temps + deltaTime * m_incrementVelocitat; 
         if (m_temps > 0.5)
-        {
-            baixa = m_joc.baixaFigura(filesEliminades);
+        { 
+            baixa = m_joc.baixaFigura(filesEliminades); 
 
-            m_temps = 0.0;
-        }
+            m_temps = 0.0; 
+        } 
 
-        GraphicManager::getInstance()->drawSprite(GRAFIC_FONS, 0, 0, false);
-        m_joc.dibuixa();
+        GraphicManager::getInstance()->drawSprite(GRAFIC_FONS, 0, 0, false); 
+        m_joc.dibuixa(); 
     }
 
 
@@ -266,6 +257,34 @@ void Partida::actualitza(int const mode, double deltaTime)
 
         figuraPosadaAlTauler(mode); 
     }
+}
+
+
+void Partida::accionsTeclatTest(bool& baixa, int& filesEliminades)
+{
+    switch (m_movimentTest.getPrimerMov())
+    {
+    case 0: m_joc.mouFigura(-1); break;
+
+    case 1: m_joc.mouFigura(1); break;
+
+    case 2: m_joc.giraFigura(GIR_HORARI); break;
+
+    case 3: m_joc.giraFigura(GIR_ANTI_HORARI); break;
+
+    case 4: baixa = m_joc.baixaFigura(filesEliminades); break;
+
+    case 5:
+        do
+        {
+            baixa = m_joc.baixaFigura(filesEliminades);
+
+        } while (baixa); break;
+
+    default: baixa = m_joc.baixaFigura(filesEliminades); break; //posem per defecte que baixi
+    }
+
+    m_movimentTest.elimina();
 }
 
 

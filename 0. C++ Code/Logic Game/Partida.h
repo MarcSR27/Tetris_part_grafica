@@ -45,6 +45,7 @@ public:
     void gestionaNovaPuntuacio(const string& nomFitxer, list<Jugador> puntuacions);
 
     void accionsTeclat(bool& baixa, int& filesEliminades);
+    void accionsTeclatTest(bool& baixa, int& filesEliminades);
     void mostraTextTauler();
     void figuraPosadaAlTauler(int mode);
 
