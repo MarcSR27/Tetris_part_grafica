@@ -9,6 +9,7 @@ Joc::Joc()
 {
 	m_taulerJoc = Tauler();
 	m_figuraCaient = Figura();
+	m_nextFigura = Figura();
 	//m_puntuacio = 0;
 	//m_nivell = 0;
 }
@@ -83,7 +84,7 @@ list<TipusMoviment> Joc::inicialitzaMovimentsTest(const string& fitxerMoviments,
 	}
 	return m_movimentsTest;
 }
-bool Joc::setFigura(int const columna, TipusFigura const tipus, int const estat, int const fila)
+bool Joc::setFigura(bool isNexFigura, int const columna, TipusFigura const tipus, int const estat, int const fila)
 {
 	Figura figura;
 	bool correcte = false;
@@ -91,8 +92,18 @@ bool Joc::setFigura(int const columna, TipusFigura const tipus, int const estat,
 	figura = Figura(tipus, estat);
 	figura.setPosicioY(fila);
 	figura.setPosicioX(columna);
+	
+	//Comporovación si es la figura actual o si es la siguientne figrua
+	if (isNexFigura)
+	{
+		if (comprovaMoviment(figura))
+		{
+			correcte = true;
 
-	if (comprovaMoviment(figura))
+			m_nextFigura = figura;
+		}
+	}
+	else if (comprovaMoviment(figura))
 	{
 		correcte = true;
 
@@ -106,6 +117,20 @@ void Joc::dibuixa()
 {
 	m_taulerJoc.dibuixaTauler();
 	m_figuraCaient.dibuixaFigura();
+
+	//Guardem les coordenades de la proxima figura
+	int coordenadaX = m_nextFigura.getPosicioX();
+	int coordenadaY = m_nextFigura.getPosicioY();
+
+	//Es coloquen les posicions de ha on se ha de mostrar la proxima figura
+	m_nextFigura.setPosicioX(18);
+	m_nextFigura.setPosicioY(2);
+	m_nextFigura.dibuixaFigura();
+
+	//Se restablecen las coordenadas originales
+	m_nextFigura.setPosicioX(coordenadaX);
+	m_nextFigura.setPosicioY(coordenadaY);
+
 }
 
 
@@ -299,4 +324,23 @@ bool Joc::comprovaMoviment(Figura& figuraSeguent)
 	}
 
 	return movimentCorrecte;
+}
+
+void Joc::avanzarFigura()
+{
+	m_figuraCaient.setColor(m_nextFigura.getColor());
+	m_figuraCaient.setEstat(m_nextFigura.getEstat());
+	m_figuraCaient.setPosicioX(m_nextFigura.getPosicioX());
+	m_figuraCaient.setPosicioY(m_nextFigura.getPosicioY());
+	m_figuraCaient.setTipus(m_nextFigura.getTipus());
+	
+	//Rellena la matriz de la figura actual con la de la siguiente figura
+	for (int fila = 0; fila < MAX_ALCADA; fila++)
+	{
+		for (int columna = 0; columna < MAX_AMPLADA; columna++)
+		{
+			m_figuraCaient.setCasellaFigura(m_nextFigura.getCasellaFigura(fila, columna), fila, columna);
+		}
+	}
+	
 }

@@ -43,7 +43,7 @@ void Partida::inicialitza(int const mode, const string& fitxerInicial, const str
         if (itFigura != m_figuraTest.end() and !m_figuraTest.empty())
         {
             Figura figuraTest = *itFigura; //per accedir a la figura a la posicio on estigui l'iterador
-            m_joc.setFigura(figuraTest.getPosicioX(), figuraTest.getTipus(), figuraTest.getEstat(), figuraTest.getPosicioY());
+            m_joc.setFigura(false, figuraTest.getPosicioX(), figuraTest.getTipus(), figuraTest.getEstat(), figuraTest.getPosicioY());
             itFigura++;
         }
 
@@ -59,8 +59,8 @@ void Partida::inicialitza(int const mode, const string& fitxerInicial, const str
         m_joc = Joc();
 
         //GENERA ALEATORIAMENT UNA FIGURA
-        int estat, columna;
-        TipusFigura tipusFigura;
+        int estat, columna, estatNext, columnaNext;
+        TipusFigura tipusFigura, nextFigura;
         
         do
         {
@@ -68,9 +68,14 @@ void Partida::inicialitza(int const mode, const string& fitxerInicial, const str
             columna = generarNumAleatori(0, MAX_COL - 1);
             estat = generarNumAleatori(0, 3);
 
-        } while (!m_joc.setFigura(columna, tipusFigura, estat, 0)); // fila = 0
+            nextFigura = generarTipusFiguraAleatoria(); //No sale la figura hasta que se genere bien
+            columnaNext = generarNumAleatori(0, MAX_COL - 1);
+            estatNext = generarNumAleatori(0, 3);
 
-        m_joc.setFigura(columna, tipusFigura, estat, 0);
+        } while (!m_joc.setFigura(false, columna, tipusFigura, estat, 0) && !(m_joc.setFigura(true, columna, tipusFigura, estat, 0))); // fila = 0
+
+        m_joc.setFigura(false, columna, tipusFigura, estat, 0);
+        m_joc.setFigura(true, columnaNext, nextFigura, estatNext, 0);
     }
 
     m_nivell = 1;
@@ -121,13 +126,12 @@ void Partida::figuraAleatoria()
 
     do
     {
-
         tipusFigura = generarTipusFiguraAleatoria();
         columna = generarNumAleatori(0, MAX_COL - 1);
         estat = generarNumAleatori(0, 3);
 
 
-    } while (!m_joc.setFigura(columna, tipusFigura, estat, 0));
+    } while (!m_joc.setFigura(true, columna, tipusFigura, estat, 0));
 }
 
 int Partida::generarNumAleatori(int min, int max)  // genera posicio aleatoria quan baixa la figura
@@ -288,6 +292,7 @@ void Partida::actualitza(int const mode, double deltaTime)
         }
         else if (mode == 0)//generem la seguent figura aleatoria al mode normal
         {
+            m_joc.avanzarFigura();
             figuraAleatoria();
         }
         else // estem en mode test
@@ -295,7 +300,7 @@ void Partida::actualitza(int const mode, double deltaTime)
             if (itFigura != m_figuraTest.end())
             {
                 Figura figuraTest = *itFigura; //per accedir a la figura a la posicio on estigui l'iterador
-                m_joc.setFigura(figuraTest.getPosicioX(), figuraTest.getTipus(), figuraTest.getEstat(), figuraTest.getPosicioY());
+                m_joc.setFigura(false, figuraTest.getPosicioX(), figuraTest.getTipus(), figuraTest.getEstat(), figuraTest.getPosicioY());
                 itFigura++;
             }
             else if (itFigura == m_figuraTest.end()) //si han sortit totes les figures

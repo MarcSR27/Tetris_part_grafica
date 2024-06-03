@@ -24,15 +24,18 @@ public:
 
 	//segona part
 	//Figura getFigura() { return m_figuraCaient; }
-	bool setFigura(int const columna, TipusFigura const tipus, int const estat, int const fila);
-	void dibuixa(); //dibuixa el tauler i la figura
+	bool setFigura(bool isNexFigura, int const columna, TipusFigura const tipus, int const estat, int const fila);
+	void dibuixa(); //dibuixa el tauler, la figura actual i la proxima
 	int getFilaFigura() { return m_figuraCaient.getPosicioY(); }
 	int getColFigura() { return m_figuraCaient.getPosicioX(); }
+
+	void avanzarFigura();
 
 	//void modeTest(); // No acabada
 
 private:
 	Figura m_figuraCaient;
+	Figura m_nextFigura;
 	Tauler m_taulerJoc;
 
 	//int m_puntuacio;

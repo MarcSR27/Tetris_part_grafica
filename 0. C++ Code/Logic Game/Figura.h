@@ -32,6 +32,8 @@ public:
     void setColor(ColorFigura color) { m_color = color; }
     void setPosicioX(int posicioX) { m_posicioX = posicioX; }
     void setPosicioY(int posicioY) { m_posicioY = posicioY; }
+    void setCasellaFigura(int valor, int fila, int columna) { m_formaFiguraActual[fila][columna] = valor; }
+
     TipusFigura getTipus() { return m_tipus; }
     ColorFigura getColor() { return m_color; }
     int getPosicioX() { return m_posicioX; }
