@@ -35,7 +35,7 @@ void Partida::inicialitza(int const mode, const string& fitxerInicial, const str
         if (!m_figuraTest.buit())
         {
             Figura figuraTest = m_figuraTest.getPrimerFig(); //accedemos a la figura en la posición frontal de la cola
-            m_joc.setFigura(figuraTest.getPosicioX(), figuraTest.getTipus(), figuraTest.getEstat(), figuraTest.getPosicioY());
+            m_joc.setFigura(false, figuraTest.getPosicioX(), figuraTest.getTipus(), figuraTest.getEstat(), figuraTest.getPosicioY());
             m_figuraTest.elimina(); //eliminem el primer node
         }
         
@@ -48,8 +48,8 @@ void Partida::inicialitza(int const mode, const string& fitxerInicial, const str
         m_joc = Joc();
 
         //GENERA ALEATORIAMENT UNA FIGURA
-        int estat, columna;
-        TipusFigura tipusFigura;
+        int estat, columna, estatNext, columnaNext;
+        TipusFigura tipusFigura, nextFigura;
         
         do
         {
@@ -57,9 +57,14 @@ void Partida::inicialitza(int const mode, const string& fitxerInicial, const str
             columna = generarNumAleatori(0, MAX_COL - 1);
             estat = generarNumAleatori(0, 3);
 
-        } while (!m_joc.setFigura(columna, tipusFigura, estat, 0) and tipusFigura != FIGURA_BOMBA); // fila = 0, evita que la primera figura sigui la Bomba
+            nextFigura = generarTipusFiguraAleatoria(); //No sale la figura hasta que se genere bien
+            columnaNext = generarNumAleatori(0, MAX_COL - 1);
+            estatNext = generarNumAleatori(0, 3);
 
-        m_joc.setFigura(columna, tipusFigura, estat, 0);
+        } while (!m_joc.setFigura(false, columna, tipusFigura, estat, 0) && !(m_joc.setFigura(true, columna, tipusFigura, estat, 0))); // fila = 0
+
+        m_joc.setFigura(false, columna, tipusFigura, estat, 0);
+        m_joc.setFigura(true, columnaNext, nextFigura, estatNext, 0);
     }
 
     m_nivell = 1;
@@ -112,7 +117,7 @@ void Partida::figuraAleatoria()
         columna = generarNumAleatori(0, MAX_COL - 1);
         estat = generarNumAleatori(0, 3);
 
-    } while (!m_joc.setFigura(columna, tipusFigura, estat, 0));
+    } while (!m_joc.setFigura(true, columna, tipusFigura, estat, 0));
 }
 
 int Partida::generarNumAleatori(int min, int max)  // genera posicio aleatoria quan baixa la figura
@@ -303,6 +308,7 @@ void Partida::figuraPosadaAlTauler(int mode)
     }
     else if (mode == 0)//generem la seguent figura aleatoria al mode normal
     {
+        m_joc.avanzarFigura();
         figuraAleatoria();
     }
     else // estem en mode test
@@ -310,7 +316,7 @@ void Partida::figuraPosadaAlTauler(int mode)
         if (!m_figuraTest.buit())
         {
             Figura figuraTest = m_figuraTest.getPrimerFig(); //accedemos a la figura en la posición frontal de la cola
-            m_joc.setFigura(figuraTest.getPosicioX(), figuraTest.getTipus(), figuraTest.getEstat(), figuraTest.getPosicioY());
+            m_joc.setFigura(false, figuraTest.getPosicioX(), figuraTest.getTipus(), figuraTest.getEstat(), figuraTest.getPosicioY());
             m_figuraTest.elimina(); //eliminem el primer node
         }
         else if (m_figuraTest.buit()) //si han sortit totes les figures
