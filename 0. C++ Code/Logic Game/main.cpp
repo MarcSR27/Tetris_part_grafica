@@ -41,12 +41,19 @@
 int main(int argc, const char* argv[])
 {
     Tetris game;
-    string fitxerInicial = "data\/Games\/partida.txt";
-    string fitxerFigures = "data\/Games\/figures.txt";
-    string fitxerMov = "data\/Games\/moviments.txt";
+
+    string partida;
+    string figures;
+    string moviments;
+
     string fitxerPuntuacions = "data\/Games\/puntuacions.txt";
 
-    bool estaJugant = game.menuInicial(fitxerPuntuacions); 
+    bool estaJugant = game.menuInicial(fitxerPuntuacions, partida,figures,moviments); 
+
+    string fitxerInicial = "data\/Games\/" + partida;
+    string fitxerFigures = "data\/Games\/" + figures;
+    string fitxerMov = "data\/Games\/" + moviments;
+
     Screen pantalla(SCREEN_SIZE_X, SCREEN_SIZE_Y);
     //if (estaJugant) // si mira puntuacions o surt, no esta jugant
     while (estaJugant)
@@ -92,7 +99,12 @@ int main(int argc, const char* argv[])
             //game = Tetris();
             system("cls");
             cout << flush;
-            estaJugant = game.menuInicial(fitxerPuntuacions);
+            estaJugant = game.menuInicial(fitxerPuntuacions, partida, figures, moviments);
+
+            fitxerInicial = "data\/Games\/" + partida;
+            fitxerFigures = "data\/Games\/" + figures;
+            fitxerMov = "data\/Games\/" + moviments;
+
         }
         else
         {

@@ -18,7 +18,7 @@ public:
 	void juga(double const deltaTime);
 	void inicialitza(string const fitxerInicial, string const fitxerFigures, string const fitxerMov);
 
-	bool menuInicial(string const fitxerPuntuacions);
+	bool menuInicial(string const fitxerPuntuacions,string& partida, string& figures, string& moviments);
 	int getMode() const { return m_mode; }
 	bool finalPartida(string const fitxerPuntuacions);
 	void imprimirMenu();

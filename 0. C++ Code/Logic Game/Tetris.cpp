@@ -17,7 +17,7 @@ void Tetris::inicialitza(string const fitxerInicial, string const fitxerFigures,
     m_partida.inicialitza(m_mode, fitxerInicial, fitxerFigures, fitxerMov); 
 }
 
-bool Tetris::menuInicial(string const fitxerPuntuacions)
+bool Tetris::menuInicial(string const fitxerPuntuacions, string& partida, string& figures, string& moviments)
 {
     m_partida.pararMusica();
     m_partida.reprodueixMusica("data\\Audio\\title.mp3");
@@ -42,7 +42,38 @@ bool Tetris::menuInicial(string const fitxerPuntuacions)
         case 2: //Modo partida tes
 
             m_mode = 1; 
+
+            char escull;
+
+            cout << "Vols seleccionar tu mateix els fitxers per al mode test? (s/n)" << endl;
+            cout << "(Si esculls que 'n' o altre valor es posaran uns fitxers per defecte)" << endl;
+            cin >> escull;
+            
+            if (escull == 's')
+            {
+                cout << "(Recordat que per poder accedir a aquest fitxer han d'estar en data/Games.)" << endl;
+                cout << "(No t'oblidis de posar .txt al final del nom del fitxer.)" << endl <<endl;
+
+                cout << "Nom del fitxer amb l'estat inicial del tauler: ";
+                cin >> partida;
+
+                cout << "Nom del fitxer amb la sequencia de figures: ";
+                cin >> figures;
+
+                cout << "Nom del fitxer amb la sequencia de moviments: ";
+                cin >> moviments;
+                cout << endl;
+            }
+            else
+            {
+               partida = "partida.txt";
+               figures = "figures.txt";
+               moviments = "moviments.txt";
+            }
+
             break;
+        
+
 
         case 3:  //Mostrar puntuaciones 
             
