@@ -148,7 +148,7 @@ bool Tetris::finalPartida(string const fitxerPuntuacions)
 
     //gestiona si jugar una altra partida
     bool final = false;
-    cout << endl << "Vols tornal al menu principal?(s/n)" << endl;
+    cout << endl << "Vols tornar al menu principal? (s/n)" << endl;
 
     resposta = controlResposta();
 

@@ -35,7 +35,10 @@ void Partida::inicialitza(int const mode, const string& fitxerInicial, const str
         if (!m_figuraTest.buit())
         {
             Figura figuraTest = m_figuraTest.getPrimerFig(); //accedemos a la figura en la posición frontal de la cola
+            Figura nextFigura = m_figuraTest.getSegonaFig();
             m_joc.setFigura(false, figuraTest.getPosicioX(), figuraTest.getTipus(), figuraTest.getEstat(), figuraTest.getPosicioY());
+            m_joc.setFigura(true, nextFigura.getPosicioX(), nextFigura.getTipus(), nextFigura.getEstat(), nextFigura.getPosicioY());
+
             m_figuraTest.elimina(); //eliminem el primer node
         }
         
@@ -57,14 +60,15 @@ void Partida::inicialitza(int const mode, const string& fitxerInicial, const str
             columna = generarNumAleatori(0, MAX_COL - 1);
             estat = generarNumAleatori(0, 3);
 
+        } while (!(m_joc.setFigura(false, columna, tipusFigura, estat, 0)) || tipusFigura == FIGURA_BOMBA); // fila = 0, evita que la BOMBA sorti primer
+
+        do
+        {
             nextFigura = generarTipusFiguraAleatoria(); //No sale la figura hasta que se genere bien
             columnaNext = generarNumAleatori(0, MAX_COL - 1);
             estatNext = generarNumAleatori(0, 3);
+        } while (!(m_joc.setFigura(true, columnaNext, nextFigura, estatNext, 0)));
 
-        } while (!m_joc.setFigura(false, columna, tipusFigura, estat, 0) && !(m_joc.setFigura(true, columna, tipusFigura, estat, 0))); // fila = 0
-
-        m_joc.setFigura(false, columna, tipusFigura, estat, 0);
-        m_joc.setFigura(true, columnaNext, nextFigura, estatNext, 0);
     }
 
     m_nivell = 1;
@@ -108,8 +112,8 @@ void Partida::puntuacioINivell(int const filesEliminades)
 
 void Partida::figuraAleatoria()
 {
-    int estat, columna;
-    TipusFigura tipusFigura;
+    int estat, columna, estatNext, columnaNext;
+        TipusFigura tipusFigura, nextFigura;
 
     do
     {
@@ -118,6 +122,12 @@ void Partida::figuraAleatoria()
         estat = generarNumAleatori(0, 3);
 
     } while (!m_joc.setFigura(true, columna, tipusFigura, estat, 0));
+    do
+    {
+        nextFigura = generarTipusFiguraAleatoria(); //No sale la figura hasta que se genere bien
+        columnaNext = generarNumAleatori(0, MAX_COL - 1);
+        estatNext = generarNumAleatori(0, 3);
+    } while (!(m_joc.setFigura(true, columna, tipusFigura, estat, 0)));
 }
 
 int Partida::generarNumAleatori(int min, int max)  // genera posicio aleatoria quan baixa la figura
@@ -185,6 +195,9 @@ void Partida::mostraTextTauler()
 
         string nivell = "Nivell: " + to_string(m_nivell);
         GraphicManager::getInstance()->drawFont(FONT_GREEN_30, POS_X_TAULER + 260, POS_Y_TAULER - 90, 1.0, nivell);
+
+        string figura = "Seguent figura";
+        GraphicManager::getInstance()->drawFont(FONT_GREEN_30, POS_X_TAULER + 400, POS_Y_TAULER, 1.0, figura);
     }
     else
     {
@@ -218,6 +231,7 @@ void Partida::actualitza(int const mode, double deltaTime)
     }
     int filesEliminades = 0;
     bool baixa = true;
+
 
     GraphicManager::getInstance()->drawSprite(GRAFIC_FONS, 0, 0, false);
     m_joc.dibuixa();
@@ -316,7 +330,9 @@ void Partida::figuraPosadaAlTauler(int mode)
         if (!m_figuraTest.buit())
         {
             Figura figuraTest = m_figuraTest.getPrimerFig(); //accedemos a la figura en la posición frontal de la cola
+            Figura nextFigura = m_figuraTest.getSegonaFig();
             m_joc.setFigura(false, figuraTest.getPosicioX(), figuraTest.getTipus(), figuraTest.getEstat(), figuraTest.getPosicioY());
+            m_joc.setFigura(true, nextFigura.getPosicioX(), nextFigura.getTipus(), nextFigura.getEstat(), nextFigura.getPosicioY());
             m_figuraTest.elimina(); //eliminem el primer node
         }
         else if (m_figuraTest.buit()) //si han sortit totes les figures

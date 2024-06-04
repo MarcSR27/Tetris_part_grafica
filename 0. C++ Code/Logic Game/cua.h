@@ -24,6 +24,15 @@ public:
 			return figuraPrimer;
 		}	
 	}
+	Figura getSegonaFig()
+	{
+		if (m_punterFigIni != nullptr && m_punterFigIni->getNext() != nullptr)
+		{
+			Figura figuraSegona = m_punterFigIni->getNext()->getValor();
+
+			return figuraSegona;
+		}
+	}
 
 	void afegeix(const Figura fig);
 	void elimina();
